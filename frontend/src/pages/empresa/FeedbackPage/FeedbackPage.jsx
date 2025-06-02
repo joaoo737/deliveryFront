@@ -1,5 +1,5 @@
 import React from 'react';
-import { FeedbackPanel } from '../../../components/empresa/FeedbackPanel/FeedbackPanel';
+import FeedbackPanel from '../../../components/empresa/FeedbackPanel';
 import './FeedbackPage.css';
 
 const FeedbackPage = () => {

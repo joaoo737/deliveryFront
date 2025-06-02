@@ -5,7 +5,7 @@ import { useAuth } from '../../../hooks/useAuth';
 import { api } from '../../../services/httpClient';
 import { API_ENDPOINTS } from '../../../utils/constants';
 import { formatCurrency } from '../../../utils/formatters';
-import { Loading } from '../../../components/common/Loading/Loading';
+import { Loading } from '../../../components/common/Loading';
 import './CheckoutPage.css';
 
 const CheckoutPage = () => {

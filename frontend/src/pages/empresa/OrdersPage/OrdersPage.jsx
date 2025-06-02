@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../../services/httpClient';
 import { API_ENDPOINTS, STATUS_PEDIDO } from '../../../utils/constants';
-import { OrderList } from '../../../components/common/OrderList/OrderList';
-import { Loading } from '../../../components/common/Loading/Loading';
+import { OrderList } from '../../../components/common/OrderList';
+import { Loading } from '../../../components/common/Loading';
 import './OrdersPage.css';
 
 const OrdersPage = () => {

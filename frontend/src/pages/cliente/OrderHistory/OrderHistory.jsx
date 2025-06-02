@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../../../services/httpClient';
 import { API_ENDPOINTS } from '../../../utils/constants';
-import { OrderList } from '../../../components/common/OrderList/OrderList';
-import { Loading } from '../../../components/common/Loading/Loading';
+import { OrderList } from '../../../components/common/OrderList';
+import { Loading } from '../../../components/common/Loading';
 import './OrderHistory.css';
 
 const OrderHistory = () => {

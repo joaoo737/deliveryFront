@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../../services/httpClient';
 import { API_ENDPOINTS } from '../../../utils/constants';
 import { formatCurrency } from '../../../utils/formatters';
-import { Loading } from '../../../components/common/Loading/Loading';
+import { Loading } from '../../../components/common/Loading';
 import './DashboardPage.css';
 
 const DashboardPage = () => {

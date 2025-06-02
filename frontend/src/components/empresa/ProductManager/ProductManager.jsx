@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../../services/httpClient';
 import { API_ENDPOINTS } from '../../../utils/constants';
 import { formatCurrency } from '../../../utils/formatters';
-import { ProductForm } from '../ProductForm/ProductForm';
-import { Loading } from '../../common/Loading/Loading';
+import { ProductForm } from '../ProductForm';
+import { Loading } from '../../common/Loading';
 import './ProductManager.css';
 
 const ProductManager = () => {

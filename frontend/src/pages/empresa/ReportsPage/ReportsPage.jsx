@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReportsPanel } from '../../../components/empresa/ReportsPanel/ReportsPanel';
+import { ReportsPanel } from '../../../components/empresa/ReportsPanel';
 import './ReportsPage.css';
 
 const ReportsPage = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProductManager } from '../../../components/empresa/ProductManager/ProductManager';
+import ProductManager from '../../../components/empresa/ProductManager';
 import './ProductsPage.css';
 
 const ProductsPage = () => {

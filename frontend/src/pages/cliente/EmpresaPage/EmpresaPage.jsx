@@ -4,9 +4,9 @@ import { api } from '../../../services/httpClient';
 import { API_ENDPOINTS } from '../../../utils/constants';
 import { formatCurrency } from '../../../utils/formatters';
 import { useCart } from '../../../hooks/useCart';
-import { ProductCard } from '../../../components/cliente/ProductCard/ProductCard';
-import { CartModal } from '../../../components/cliente/CartModal/CartModal';
-import { Loading } from '../../../components/common/Loading/Loading';
+import { ProductCard } from '../../../components/cliente/ProductCard';
+import { CartModal } from '../../../components/cliente/CartModal';
+import { Loading } from '../../../components/common/Loading';
 import './EmpresaPage.css';
 
 const EmpresaPage = () => {

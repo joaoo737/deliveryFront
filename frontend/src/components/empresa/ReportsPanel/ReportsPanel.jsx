@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../../services/httpClient';
 import { API_ENDPOINTS } from '../../../utils/constants';
 import { formatCurrency, formatDate } from '../../../utils/formatters';
-import { Loading } from '../../common/Loading/Loading';
+import { Loading } from '../../common/Loading';
 import './ReportsPanel.css';
 
 const ReportsPanel = () => {

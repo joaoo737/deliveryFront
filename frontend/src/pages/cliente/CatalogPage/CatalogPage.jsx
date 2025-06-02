@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api } from '../../../services/httpClient';
 import { API_ENDPOINTS } from '../../../utils/constants';
-import { SearchBar } from '../../../components/cliente/SearchBar/SearchBar';
-import { FilterPanel } from '../../../components/cliente/FilterPanel/FilterPanel';
-import { RestaurantCard } from '../../../components/cliente/RestaurantCard/RestaurantCard';
-import { Loading } from '../../../components/common/Loading/Loading';
+import { SearchBar } from '../../../components/cliente/SearchBar';
+import { FilterPanel } from '../../../components/cliente/FilterPanel';
+import { RestaurantCard } from '../../../components/cliente/RestaurantCard';
+import { Loading } from '../../../components/common/Loading';
 import './CatalogPage.css';
 
 const CatalogPage = () => {
