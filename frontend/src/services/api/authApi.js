@@ -104,6 +104,111 @@ export const authValidations = {
       isValid: Object.keys(errors).length === 0,
       errors
     };
+  },
+
+  /**
+   * Valida dados de registro de cliente
+   */
+  validateClienteRegister: (data) => {
+    const errors = {};
+
+    // Email
+    if (!data.email) {
+      errors.email = 'Email é obrigatório';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      errors.email = 'Email inválido';
+    }
+
+    // Senha
+    if (!data.senha) {
+      errors.senha = 'Senha é obrigatória';
+    } else if (data.senha.length < 6) {
+      errors.senha = 'Senha deve ter pelo menos 6 caracteres';
+    }
+
+    // Nome
+    if (!data.nome || data.nome.trim().length < 2) {
+      errors.nome = 'Nome deve ter pelo menos 2 caracteres';
+    }
+
+    // CPF
+    if (!data.cpf) {
+      errors.cpf = 'CPF é obrigatório';
+    } else if (!/^\d{11}$/.test(data.cpf.replace(/\D/g, ''))) {
+      errors.cpf = 'CPF deve ter 11 dígitos';
+    }
+
+    // Telefone
+    if (!data.telefoneCliente) {
+      errors.telefoneCliente = 'Telefone é obrigatório';
+    } else if (!/^\d{10,11}$/.test(data.telefoneCliente.replace(/\D/g, ''))) {
+      errors.telefoneCliente = 'Telefone deve ter 10 ou 11 dígitos';
+    }
+
+    // Endereço
+    if (!data.enderecoCliente || data.enderecoCliente.trim().length < 10) {
+      errors.enderecoCliente = 'Endereço deve ter pelo menos 10 caracteres';
+    }
+
+    return {
+      isValid: Object.keys(errors).length === 0,
+      errors
+    };
+  },
+
+  /**
+   * Valida dados de registro de empresa
+   */
+  validateEmpresaRegister: (data) => {
+    const errors = {};
+
+    // Email
+    if (!data.email) {
+      errors.email = 'Email é obrigatório';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      errors.email = 'Email inválido';
+    }
+
+    // Senha
+    if (!data.senha) {
+      errors.senha = 'Senha é obrigatória';
+    } else if (data.senha.length < 6) {
+      errors.senha = 'Senha deve ter pelo menos 6 caracteres';
+    }
+
+    // Nome fantasia
+    if (!data.nomeFantasia || data.nomeFantasia.trim().length < 2) {
+      errors.nomeFantasia = 'Nome fantasia deve ter pelo menos 2 caracteres';
+    }
+
+    // CNPJ
+    if (!data.cnpj) {
+      errors.cnpj = 'CNPJ é obrigatório';
+    } else if (!/^\d{14}$/.test(data.cnpj.replace(/\D/g, ''))) {
+      errors.cnpj = 'CNPJ deve ter 14 dígitos';
+    }
+
+    // Telefone
+    if (!data.telefoneEmpresa) {
+      errors.telefoneEmpresa = 'Telefone é obrigatório';
+    } else if (!/^\d{10,11}$/.test(data.telefoneEmpresa.replace(/\D/g, ''))) {
+      errors.telefoneEmpresa = 'Telefone deve ter 10 ou 11 dígitos';
+    }
+
+    // Endereço
+    if (!data.enderecoEmpresa || data.enderecoEmpresa.trim().length < 10) {
+      errors.enderecoEmpresa = 'Endereço deve ter pelo menos 10 caracteres';
+    }
+
+    // Categoria
+    if (!data.categoriaId) {
+      errors.categoriaId = 'Categoria é obrigatória';
+    }
+
+    return {
+      isValid: Object.keys(errors).length === 0,
+      errors
+    };
   }
 };
 
@@ -283,108 +388,5 @@ export const AUTH_CONSTANTS = {
     PROFILE_UPDATED: 'Perfil atualizado com sucesso!'
   }
 };
-      errors
-    };
-  },
 
-  /**
-   * Valida dados de registro de cliente
-   */
-  validateClienteRegister: (data) => {
-    const errors = {};
-
-    // Email
-    if (!data.email) {
-      errors.email = 'Email é obrigatório';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-      errors.email = 'Email inválido';
-    }
-
-    // Senha
-    if (!data.senha) {
-      errors.senha = 'Senha é obrigatória';
-    } else if (data.senha.length < 6) {
-      errors.senha = 'Senha deve ter pelo menos 6 caracteres';
-    }
-
-    // Nome
-    if (!data.nome || data.nome.trim().length < 2) {
-      errors.nome = 'Nome deve ter pelo menos 2 caracteres';
-    }
-
-    // CPF
-    if (!data.cpf) {
-      errors.cpf = 'CPF é obrigatório';
-    } else if (!/^\d{11}$/.test(data.cpf.replace(/\D/g, ''))) {
-      errors.cpf = 'CPF deve ter 11 dígitos';
-    }
-
-    // Telefone
-    if (!data.telefoneCliente) {
-      errors.telefoneCliente = 'Telefone é obrigatório';
-    } else if (!/^\d{10,11}$/.test(data.telefoneCliente.replace(/\D/g, ''))) {
-      errors.telefoneCliente = 'Telefone deve ter 10 ou 11 dígitos';
-    }
-
-    // Endereço
-    if (!data.enderecoCliente || data.enderecoCliente.trim().length < 10) {
-      errors.enderecoCliente = 'Endereço deve ter pelo menos 10 caracteres';
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
-      errors
-    };
-  },
-
-  /**
-   * Valida dados de registro de empresa
-   */
-  validateEmpresaRegister: (data) => {
-    const errors = {};
-
-    // Email
-    if (!data.email) {
-      errors.email = 'Email é obrigatório';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-      errors.email = 'Email inválido';
-    }
-
-    // Senha
-    if (!data.senha) {
-      errors.senha = 'Senha é obrigatória';
-    } else if (data.senha.length < 6) {
-      errors.senha = 'Senha deve ter pelo menos 6 caracteres';
-    }
-
-    // Nome fantasia
-    if (!data.nomeFantasia || data.nomeFantasia.trim().length < 2) {
-      errors.nomeFantasia = 'Nome fantasia deve ter pelo menos 2 caracteres';
-    }
-
-    // CNPJ
-    if (!data.cnpj) {
-      errors.cnpj = 'CNPJ é obrigatório';
-    } else if (!/^\d{14}$/.test(data.cnpj.replace(/\D/g, ''))) {
-      errors.cnpj = 'CNPJ deve ter 14 dígitos';
-    }
-
-    // Telefone
-    if (!data.telefoneEmpresa) {
-      errors.telefoneEmpresa = 'Telefone é obrigatório';
-    } else if (!/^\d{10,11}$/.test(data.telefoneEmpresa.replace(/\D/g, ''))) {
-      errors.telefoneEmpresa = 'Telefone deve ter 10 ou 11 dígitos';
-    }
-
-    // Endereço
-    if (!data.enderecoEmpresa || data.enderecoEmpresa.trim().length < 10) {
-      errors.enderecoEmpresa = 'Endereço deve ter pelo menos 10 caracteres';
-    }
-
-    // Categoria
-    if (!data.categoriaId) {
-      errors.categoriaId = 'Categoria é obrigatória';
-    }
-
-    return {
-      isValid: Object.keys(errors).length === 0,
+export default authApi;
