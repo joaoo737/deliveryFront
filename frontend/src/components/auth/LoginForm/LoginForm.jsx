@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
-import { validateEmail, validatePassword } from '../../../utils/validators';
-import { ButtonLoading } from '../../common/Loading/Loading';
+import { authValidations } from '../../../services/api/authApi';
 import './LoginForm.css';
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const { login, isLoading, error, clearError } = useAuth();
+  const { login } = useAuth();
   
   const [formData, setFormData] = useState({
     email: '',
     senha: ''
   });
   
-  const [validationErrors, setValidationErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,141 +23,99 @@ const LoginForm = () => {
       ...prev,
       [name]: value
     }));
-    
-    if (validationErrors[name]) {
-      setValidationErrors(prev => ({
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
         ...prev,
-        [name]: null
+        [name]: ''
       }));
     }
-    
-    if (error) {
-      clearError();
-    }
-  };
-
-  const validateForm = () => {
-    const errors = {};
-    
-    const emailError = validateEmail(formData.email);
-    if (emailError) errors.email = emailError;
-    
-    const senhaError = validatePassword(formData.senha);
-    if (senhaError) errors.senha = senhaError;
-    
-    setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
+    setApiError('');
+
+    // Validate form
+    const validation = authValidations.validateLogin(formData);
+    if (!validation.isValid) {
+      setErrors(validation.errors);
       return;
     }
-    
+
+    setLoading(true);
     try {
       await login(formData);
       navigate('/');
-    } catch (err) {
-      console.error('Erro no login:', err);
+    } catch (error) {
+      setApiError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
-    <div className="login-form">
-      <div className="login-form__header">
-        <h2 className="login-form__title">Entrar</h2>
-        <p className="login-form__subtitle">
-          Acesse sua conta para continuar
-        </p>
-      </div>
-
-      <form onSubmit={handleSubmit} className="login-form__form">
-        {error && (
-          <div className="login-form__error">
-            <span className="login-form__error-icon">⚠️</span>
-            <span className="login-form__error-text">{error}</span>
+    <div className="login-form-container">
+      <form onSubmit={handleSubmit} className="login-form">
+        <h2>Login</h2>
+        
+        {apiError && (
+          <div className="error-message">
+            {apiError}
           </div>
         )}
 
-        <div className="login-form__field">
-          <label htmlFor="email" className="login-form__label">
-            Email
-          </label>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className={`login-form__input ${validationErrors.email ? 'login-form__input--error' : ''}`}
-            placeholder="seu@email.com"
-            disabled={isLoading}
+            className={errors.email ? 'error' : ''}
+            placeholder="Seu email"
+            disabled={loading}
           />
-          {validationErrors.email && (
-            <span className="login-form__field-error">
-              {validationErrors.email}
-            </span>
+          {errors.email && (
+            <span className="error-text">{errors.email}</span>
           )}
         </div>
 
-        <div className="login-form__field">
-          <label htmlFor="senha" className="login-form__label">
-            Senha
-          </label>
-          <div className="login-form__password-field">
-            <input
-              type={showPassword ? 'text' : 'password'}
-              id="senha"
-              name="senha"
-              value={formData.senha}
-              onChange={handleChange}
-              className={`login-form__input ${validationErrors.senha ? 'login-form__input--error' : ''}`}
-              placeholder="Sua senha"
-              disabled={isLoading}
-            />
-            <button
-              type="button"
-              onClick={togglePasswordVisibility}
-              className="login-form__password-toggle"
-              disabled={isLoading}
-            >
-              {showPassword ? '👁️' : '👁️‍🗨️'}
-            </button>
-          </div>
-          {validationErrors.senha && (
-            <span className="login-form__field-error">
-              {validationErrors.senha}
-            </span>
+        <div className="form-group">
+          <label htmlFor="senha">Senha</label>
+          <input
+            type="password"
+            id="senha"
+            name="senha"
+            value={formData.senha}
+            onChange={handleChange}
+            className={errors.senha ? 'error' : ''}
+            placeholder="Sua senha"
+            disabled={loading}
+          />
+          {errors.senha && (
+            <span className="error-text">{errors.senha}</span>
           )}
         </div>
 
-        <button
-          type="submit"
-          className="login-form__submit"
-          disabled={isLoading}
+        <button 
+          type="submit" 
+          className="submit-button"
+          disabled={loading}
         >
-          {isLoading ? (
-            <ButtonLoading size="medium" />
-          ) : (
-            'Entrar'
-          )}
+          {loading ? 'Entrando...' : 'Entrar'}
         </button>
-      </form>
 
-      <div className="login-form__footer">
-        <p className="login-form__footer-text">
-          Ainda não tem uma conta?{' '}
-          <Link to="/register" className="login-form__footer-link">
-            Cadastre-se
-          </Link>
-        </p>
-      </div>
+        <div className="form-footer">
+          <p>
+            Não tem uma conta?{' '}
+            <a href="/register" className="link">
+              Cadastre-se
+            </a>
+          </p>
+        </div>
+      </form>
     </div>
   );
 };
