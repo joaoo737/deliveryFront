@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { authValidations } from '../../../services/api/authApi';
-import { TIPO_USUARIO } from '../../../utils/constants';
 import './LoginForm.css';
 
 const LoginForm = () => {
@@ -11,8 +10,7 @@ const LoginForm = () => {
   
   const [formData, setFormData] = useState({
     email: '',
-    senha: '',
-    tipoUsuario: TIPO_USUARIO.CLIENTE
+    senha: ''
   });
   
   const [errors, setErrors] = useState({});
@@ -47,15 +45,8 @@ const LoginForm = () => {
 
     setLoading(true);
     try {
-      const response = await login(formData);
-      // Redirect based on user type
-      if (response.user.tipoUsuario === TIPO_USUARIO.CLIENTE) {
-        navigate('/');
-      } else if (response.user.tipoUsuario === TIPO_USUARIO.EMPRESA) {
-        navigate('/empresa/dashborad');
-      } else {
-        navigate('/');
-      }
+      await login(formData);
+      navigate('/');  // Let AppRoutes handle the redirect based on user type
     } catch (error) {
       setApiError(error.message);
     } finally {
@@ -106,34 +97,6 @@ const LoginForm = () => {
           {errors.senha && (
             <span className="error-text">{errors.senha}</span>
           )}
-        </div>
-
-        <div className="form-group">
-          <label>Tipo de Usuário</label>
-          <div className="user-type-toggle">
-            <label className={`user-type-option ${formData.tipoUsuario === TIPO_USUARIO.CLIENTE ? 'active' : ''}`}>
-              <input
-                type="radio"
-                name="tipoUsuario"
-                value={TIPO_USUARIO.CLIENTE}
-                checked={formData.tipoUsuario === TIPO_USUARIO.CLIENTE}
-                onChange={handleChange}
-                disabled={loading}
-              />
-              Cliente
-            </label>
-            <label className={`user-type-option ${formData.tipoUsuario === TIPO_USUARIO.EMPRESA ? 'active' : ''}`}>
-              <input
-                type="radio"
-                name="tipoUsuario"
-                value={TIPO_USUARIO.EMPRESA}
-                checked={formData.tipoUsuario === TIPO_USUARIO.EMPRESA}
-                onChange={handleChange}
-                disabled={loading}
-              />
-              Empresa
-            </label>
-          </div>
         </div>
 
         <button 

@@ -42,13 +42,12 @@ const SearchBar = () => {
 
     try {
       setLoading(true);
-      const response = await api.get(API_ENDPOINTS.PUBLICO.BUSCA, {
-        params: { q: debouncedQuery }
-      });
+      const response = await api.get(`${API_ENDPOINTS.PUBLICO.BUSCA}?q=${encodeURIComponent(debouncedQuery)}`);
       
+      // Ensure we have valid arrays even if the response is empty
       setResults({
-        empresas: response.empresas || [],
-        produtos: response.produtos || []
+        empresas: Array.isArray(response.empresas) ? response.empresas : [],
+        produtos: Array.isArray(response.produtos) ? response.produtos : []
       });
       setShowResults(true);
     } catch (error) {

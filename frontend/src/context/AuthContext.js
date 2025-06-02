@@ -75,11 +75,10 @@ export const AuthProvider = ({ children }) => {
 
       setToken(token);
       setUser(user);
-
       saveToStorage(STORAGE_KEYS.TOKEN, token);
       saveToStorage(STORAGE_KEYS.USER, user);
 
-      return response;
+      return { token, user };
     } catch (error) {
       setError(error.message || AUTH_CONSTANTS.ERROR_MESSAGES.INVALID_CREDENTIALS);
       throw error;

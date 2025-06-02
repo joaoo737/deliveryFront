@@ -1,55 +1,83 @@
+.user-type-toggle-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.user-type-button {
+  flex: 1;
+  padding: 1rem;
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--primary-color);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.user-type-button:hover {
+  background: var(--primary-color-light);
+}
+
+.user-type-button.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.user-type-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Existing styles */
 .register-form-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: var(--spacing-md);
-  background-color: var(--background-primary);
+  padding: 2rem;
+  background-color: var(--bg-primary);
 }
 
 .register-form {
   width: 100%;
-  max-width: 500px;
-  padding: var(--spacing-xl);
-  background-color: var(--background-secondary);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  margin: var(--spacing-xl) 0;
-  overflow-y: auto;
-  max-height: 90vh;
+  max-width: 480px;
+  padding: 2rem;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .register-form h2 {
-  color: var(--text-primary);
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  margin-bottom: var(--spacing-xl);
   text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
 }
 
 .form-group {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: 1.5rem;
 }
 
 .form-group label {
   display: block;
-  color: var(--text-secondary);
-  font-size: var(--font-size-sm);
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: var(--spacing-sm) var(--spacing-md);
-  background-color: var(--background-tertiary);
+  padding: 0.75rem;
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: 6px;
+  background: var(--bg-primary);
   color: var(--text-primary);
-  font-size: var(--font-size-md);
-  transition: all var(--transition-fast);
-  resize: vertical;
+  font-size: 1rem;
 }
 
 .form-group input:focus,
@@ -57,7 +85,7 @@
 .form-group textarea:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px var(--primary-dark);
+  box-shadow: 0 0 0 2px var(--primary-color-light);
 }
 
 .form-group input.error,
@@ -68,129 +96,53 @@
 
 .error-text {
   color: var(--error-color);
-  font-size: var(--font-size-sm);
-  margin-top: var(--spacing-xs);
-  display: block;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
 
 .error-message {
-  background-color: var(--error-light);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  background: var(--error-bg);
   color: var(--error-color);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-lg);
-  font-size: var(--font-size-sm);
+  border-radius: 6px;
   text-align: center;
-  border: 1px solid var(--error-color);
 }
 
 .submit-button {
   width: 100%;
-  padding: var(--spacing-md);
-  background-color: var(--primary-color);
-  color: var(--text-primary);
+  padding: 1rem;
+  background: var(--primary-color);
+  color: white;
   border: none;
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-semibold);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color var(--transition-fast);
+  transition: background-color 0.3s ease;
 }
 
-.submit-button:hover:not(:disabled) {
-  background-color: var(--primary-hover);
+.submit-button:hover {
+  background: var(--primary-color-dark);
 }
 
 .submit-button:disabled {
-  background-color: var(--primary-dark);
+  opacity: 0.6;
   cursor: not-allowed;
-  opacity: 0.7;
 }
 
 .form-footer {
-  margin-top: var(--spacing-xl);
+  margin-top: 1.5rem;
   text-align: center;
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
 }
 
 .form-footer .link {
   color: var(--primary-color);
   text-decoration: none;
-  font-weight: var(--font-weight-medium);
-  transition: color var(--transition-fast);
+  font-weight: 500;
 }
 
 .form-footer .link:hover {
-  color: var(--primary-hover);
-}
-
-.user-type-toggle {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-xs);
-}
-
-.user-type-option {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-sm);
-  background-color: var(--background-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-medium);
-  transition: all var(--transition-fast);
-  user-select: none;
-}
-
-.user-type-option:hover {
-  border-color: var(--primary-color);
-}
-
-.user-type-option input {
-  cursor: pointer;
-  margin: 0;
-  width: auto;
-}
-
-.user-type-option.active {
-  background-color: var(--primary-light);
-  border-color: var(--primary-color);
-  color: var(--primary-color);
-}
-
-@media (max-width: 480px) {
-  .register-form-container {
-    padding: var(--spacing-sm);
-  }
-
-  .register-form {
-    padding: var(--spacing-lg);
-    margin: var(--spacing-md) 0;
-    max-height: 85vh;
-  }
-  
-  .register-form h2 {
-    font-size: var(--font-size-xl);
-    margin-bottom: var(--spacing-lg);
-  }
-  
-  .submit-button {
-    padding: var(--spacing-sm);
-  }
-
-  .user-type-toggle {
-    flex-direction: column;
-    gap: var(--spacing-sm);
-  }
-
-  .form-group {
-    margin-bottom: var(--spacing-md);
-  }
+  text-decoration: underline;
 }

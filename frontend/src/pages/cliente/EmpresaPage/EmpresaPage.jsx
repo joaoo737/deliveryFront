@@ -32,10 +32,10 @@ const EmpresaPage = () => {
         api.get(`${API_ENDPOINTS.PUBLICO.EMPRESAS}/${id}/categorias`)
       ]);
 
-      setEmpresa(empresaResponse);
-      setCategorias(categoriasResponse);
-      if (categoriasResponse.length > 0) {
-        setSelectedCategory(categoriasResponse[0].id);
+      setEmpresa(empresaResponse.data);
+      setCategorias(categoriasResponse.data);
+      if (categoriasResponse.data.length > 0) {
+        setSelectedCategory(categoriasResponse.data[0].id);
       }
     } catch (error) {
       console.error('Erro ao carregar dados da empresa:', error);

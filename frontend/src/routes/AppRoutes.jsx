@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import ProtectedRoute from './ProtectedRoute';
 import PublicRoute from './PublicRoute';
 import Loading from '../components/common/Loading/Loading';
+import Header from '../components/common/Header/Header';
 
 // Importação lazy dos componentes para code splitting
 const Home = React.lazy(() => import('../pages/Home/Home'));
@@ -29,6 +30,7 @@ const FeedbackPage = React.lazy(() => import('../pages/empresa/FeedbackPage/Feed
 // Layout wrapper component
 const Layout = ({ children }) => (
   <div className="min-h-screen bg-bg-primary text-text-primary">
+    <Header />
     <Suspense fallback={<Loading />}>
       {children}
     </Suspense>

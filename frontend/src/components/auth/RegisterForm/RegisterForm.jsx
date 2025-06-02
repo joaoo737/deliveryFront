@@ -110,27 +110,23 @@ const RegisterForm = () => {
 
         <div className="form-group">
           <label>Tipo de Usuário</label>
-          <div className="user-type-toggle">
-            <label className={`user-type-option ${userType === 'CLIENTE' ? 'active' : ''}`}>
-              <input
-                type="radio"
-                name="userType"
-                value="CLIENTE"
-                checked={userType === 'CLIENTE'}
-                onChange={handleUserTypeChange}
-              />
+          <div className="user-type-toggle-buttons">
+            <button
+              type="button"
+              className={`user-type-button ${userType === 'CLIENTE' ? 'active' : ''}`}
+              onClick={() => setUserType('CLIENTE')}
+              disabled={loading}
+            >
               Cliente
-            </label>
-            <label className={`user-type-option ${userType === 'EMPRESA' ? 'active' : ''}`}>
-              <input
-                type="radio"
-                name="userType"
-                value="EMPRESA"
-                checked={userType === 'EMPRESA'}
-                onChange={handleUserTypeChange}
-              />
+            </button>
+            <button
+              type="button"
+              className={`user-type-button ${userType === 'EMPRESA' ? 'active' : ''}`}
+              onClick={() => setUserType('EMPRESA')}
+              disabled={loading}
+            >
               Empresa
-            </label>
+            </button>
           </div>
         </div>
 
