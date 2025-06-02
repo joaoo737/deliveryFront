@@ -14,6 +14,9 @@
   background-color: var(--background-secondary);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
+  margin: var(--spacing-xl) 0;
+  overflow-y: auto;
+  max-height: 90vh;
 }
 
 .register-form h2 {
@@ -71,13 +74,14 @@
 }
 
 .error-message {
-  background-color: var(--error-color);
-  color: var(--text-primary);
+  background-color: var(--error-light);
+  color: var(--error-color);
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-md);
   margin-bottom: var(--spacing-lg);
   font-size: var(--font-size-sm);
   text-align: center;
+  border: 1px solid var(--error-color);
 }
 
 .submit-button {
@@ -123,33 +127,53 @@
 
 .user-type-toggle {
   display: flex;
+  justify-content: space-between;
   gap: var(--spacing-md);
   margin-top: var(--spacing-xs);
 }
 
 .user-type-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm);
+  background-color: var(--background-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
   color: var(--text-secondary);
   cursor: pointer;
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
   user-select: none;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
+}
+
+.user-type-option:hover {
+  border-color: var(--primary-color);
 }
 
 .user-type-option input {
   cursor: pointer;
+  margin: 0;
+  width: auto;
 }
 
 .user-type-option.active {
+  background-color: var(--primary-light);
+  border-color: var(--primary-color);
   color: var(--primary-color);
-  font-weight: var(--font-weight-bold);
 }
 
 @media (max-width: 480px) {
+  .register-form-container {
+    padding: var(--spacing-sm);
+  }
+
   .register-form {
     padding: var(--spacing-lg);
+    margin: var(--spacing-md) 0;
+    max-height: 85vh;
   }
   
   .register-form h2 {
@@ -159,5 +183,14 @@
   
   .submit-button {
     padding: var(--spacing-sm);
+  }
+
+  .user-type-toggle {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .form-group {
+    margin-bottom: var(--spacing-md);
   }
 }

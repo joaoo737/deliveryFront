@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { useCart } from '../../../hooks/useCart';
@@ -10,6 +10,11 @@ const Header = () => {
   const { user, logout } = useAuth();
   const { itemCount, clearCart } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    // Close dropdown menu on user change (login/logout)
+    setIsMenuOpen(false);
+  }, [user]);
 
   const handleLogout = () => {
     logout();

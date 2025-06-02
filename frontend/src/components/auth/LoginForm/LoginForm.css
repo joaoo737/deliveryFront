@@ -35,7 +35,8 @@
   margin-bottom: var(--spacing-xs);
 }
 
-.form-group input {
+.form-group input[type="email"],
+.form-group input[type="password"] {
   width: 100%;
   padding: var(--spacing-sm) var(--spacing-md);
   background-color: var(--background-tertiary);
@@ -114,6 +115,46 @@
   color: var(--primary-hover);
 }
 
+/* User Type Toggle Styles */
+.user-type-toggle {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-xs);
+}
+
+.user-type-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm);
+  background-color: var(--background-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+}
+
+.user-type-option:hover {
+  border-color: var(--primary-color);
+}
+
+.user-type-option.active {
+  background-color: var(--primary-light);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.user-type-option input[type="radio"] {
+  margin: 0;
+  width: auto;
+  cursor: pointer;
+}
+
 @media (max-width: 480px) {
   .login-form {
     padding: var(--spacing-lg);
@@ -126,5 +167,10 @@
   
   .submit-button {
     padding: var(--spacing-sm);
+  }
+
+  .user-type-toggle {
+    flex-direction: column;
+    gap: var(--spacing-sm);
   }
 }
