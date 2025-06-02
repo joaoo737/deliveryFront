@@ -20,7 +20,7 @@ const CheckoutPage = React.lazy(() => import('../pages/cliente/CheckoutPage/Chec
 const OrderHistory = React.lazy(() => import('../pages/cliente/OrderHistory/OrderHistory'));
 
 // Empresa pages
-const DashboardPage = React.lazy(() => import('../pages/empresa/DashboardPage/DashboardPage'));
+const DashboardPage = React.lazy(() => import('../pages/empresa/DashboradPage/DashboardPage'));
 const ProductsPage = React.lazy(() => import('../pages/empresa/ProductsPage/ProductsPage'));
 const OrdersPage = React.lazy(() => import('../pages/empresa/OrdersPage/OrdersPage'));
 const ReportsPage = React.lazy(() => import('../pages/empresa/ReportsPage/ReportsPage'));
