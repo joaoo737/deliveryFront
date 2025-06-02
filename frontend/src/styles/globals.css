@@ -1,11 +1,10 @@
-/* Reset básico */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Configurações globais */
 html {
   font-size: 16px;
   height: 100%;
@@ -29,7 +28,6 @@ body {
   flex-direction: column;
 }
 
-/* Scrollbar personalizada */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -47,7 +45,6 @@ body {
   background: #e63e1a;
 }
 
-/* Links */
 a {
   color: #FF4621;
   text-decoration: none;
@@ -58,7 +55,6 @@ a:hover {
   color: #e63e1a;
 }
 
-/* Inputs e botões globais */
 input, textarea, select {
   font-family: inherit;
 }
@@ -68,7 +64,6 @@ button {
   cursor: pointer;
 }
 
-/* Utility classes */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -171,7 +166,6 @@ button {
   padding: 2rem;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .container {
     padding: 0 15px;

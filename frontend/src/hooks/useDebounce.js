@@ -1,8 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-/**
- * Hook para debounce de valores
- */
 export const useDebounce = (value, delay = 300) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -19,14 +16,10 @@ export const useDebounce = (value, delay = 300) => {
   return debouncedValue;
 };
 
-/**
- * Hook para debounce de funções
- */
 export const useDebouncedCallback = (callback, delay = 300, deps = []) => {
   const timeoutRef = useRef(null);
   const callbackRef = useRef(callback);
 
-  // Atualizar callback ref sempre que deps mudarem
   useEffect(() => {
     callbackRef.current = callback;
   }, [callback, ...deps]);
@@ -41,7 +34,6 @@ export const useDebouncedCallback = (callback, delay = 300, deps = []) => {
     }, delay);
   }, [delay]);
 
-  // Cleanup no unmount
   useEffect(() => {
     return () => {
       if (timeoutRef.current) {
@@ -50,7 +42,6 @@ export const useDebouncedCallback = (callback, delay = 300, deps = []) => {
     };
   }, []);
 
-  // Função para cancelar o debounce
   const cancel = useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -58,7 +49,6 @@ export const useDebouncedCallback = (callback, delay = 300, deps = []) => {
     }
   }, []);
 
-  // Função para executar imediatamente
   const flush = useCallback((...args) => {
     cancel();
     callbackRef.current(...args);
@@ -71,9 +61,6 @@ export const useDebouncedCallback = (callback, delay = 300, deps = []) => {
   };
 };
 
-/**
- * Hook para debounce de busca
- */
 export const useSearchDebounce = (searchTerm, delay = 500, options = {}) => {
   const {
     minLength = 2,
@@ -90,7 +77,6 @@ export const useSearchDebounce = (searchTerm, delay = 500, options = {}) => {
     const handler = setTimeout(() => {
       let processedTerm = searchTerm;
 
-      // Processar termo de busca
       if (trimWhitespace) {
         processedTerm = processedTerm.trim();
       }
@@ -99,7 +85,6 @@ export const useSearchDebounce = (searchTerm, delay = 500, options = {}) => {
         processedTerm = processedTerm.toLowerCase();
       }
 
-      // Verificar comprimento mínimo
       if (processedTerm.length >= minLength) {
         setDebouncedSearchTerm(processedTerm);
       } else {
@@ -121,9 +106,6 @@ export const useSearchDebounce = (searchTerm, delay = 500, options = {}) => {
   };
 };
 
-/**
- * Hook para debounce com estado de loading
- */
 export const useLoadingDebounce = (value, delay = 300) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   const [isLoading, setIsLoading] = useState(false);
@@ -148,9 +130,6 @@ export const useLoadingDebounce = (value, delay = 300) => {
   };
 };
 
-/**
- * Hook para debounce de múltiplos valores
- */
 export const useMultipleDebounce = (values, delay = 300) => {
   const [debouncedValues, setDebouncedValues] = useState(values);
 
@@ -167,16 +146,12 @@ export const useMultipleDebounce = (values, delay = 300) => {
   return debouncedValues;
 };
 
-/**
- * Hook para debounce com cache
- */
 export const useDebounceWithCache = (value, delay = 300, cacheTime = 5000) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   const cacheRef = useRef(new Map());
   const timeoutRef = useRef(null);
 
   useEffect(() => {
-    // Verificar se valor está no cache
     if (cacheRef.current.has(value)) {
       const cachedData = cacheRef.current.get(value);
       if (Date.now() - cachedData.timestamp < cacheTime) {
@@ -185,21 +160,17 @@ export const useDebounceWithCache = (value, delay = 300, cacheTime = 5000) => {
       }
     }
 
-    // Limpar timeout anterior
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
 
-    // Configurar novo timeout
     timeoutRef.current = setTimeout(() => {
       setDebouncedValue(value);
       
-      // Adicionar ao cache
       cacheRef.current.set(value, {
         timestamp: Date.now()
       });
 
-      // Limpar cache antigo
       const now = Date.now();
       for (const [key, data] of cacheRef.current.entries()) {
         if (now - data.timestamp > cacheTime) {
@@ -226,9 +197,6 @@ export const useDebounceWithCache = (value, delay = 300, cacheTime = 5000) => {
   };
 };
 
-/**
- * Hook para throttle (limitar frequência de execução)
- */
 export const useThrottle = (value, limit = 300) => {
   const [throttledValue, setThrottledValue] = useState(value);
   const lastExecuted = useRef(Date.now());
@@ -253,9 +221,6 @@ export const useThrottle = (value, limit = 300) => {
   return throttledValue;
 };
 
-/**
- * Hook para throttle de funções
- */
 export const useThrottledCallback = (callback, limit = 300, deps = []) => {
   const lastExecuted = useRef(Date.now());
   const timeoutRef = useRef(null);
@@ -295,9 +260,6 @@ export const useThrottledCallback = (callback, limit = 300, deps = []) => {
   return throttledCallback;
 };
 
-/**
- * Hook para debounce condicional
- */
 export const useConditionalDebounce = (value, delay = 300, condition = true) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 

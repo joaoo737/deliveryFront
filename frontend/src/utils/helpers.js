@@ -1,8 +1,5 @@
 import { STORAGE_KEYS, STATUS_PEDIDO_COLORS, STATUS_PEDIDO_LABELS } from './constants';
 
-/**
- * Debounce function para otimizar buscas
- */
 export const debounce = (func, wait) => {
   let timeout;
   return function executedFunction(...args) {
@@ -15,9 +12,6 @@ export const debounce = (func, wait) => {
   };
 };
 
-/**
- * Throttle function para limitar execuções
- */
 export const throttle = (func, limit) => {
   let inThrottle;
   return function() {
@@ -31,9 +25,6 @@ export const throttle = (func, limit) => {
   };
 };
 
-/**
- * Deep clone de objetos
- */
 export const deepClone = (obj) => {
   if (obj === null || typeof obj !== 'object') return obj;
   if (obj instanceof Date) return new Date(obj.getTime());
@@ -49,9 +40,6 @@ export const deepClone = (obj) => {
   }
 };
 
-/**
- * Verifica se dois objetos são iguais
- */
 export const isEqual = (obj1, obj2) => {
   if (obj1 === obj2) return true;
   if (obj1 == null || obj2 == null) return false;
@@ -74,18 +62,12 @@ export const isEqual = (obj1, obj2) => {
   return obj1 === obj2;
 };
 
-/**
- * Gera ID único
- */
 export const generateId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 };
 
-/**
- * Calcula distância entre duas coordenadas (Haversine)
- */
 export const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  const R = 6371; // Raio da Terra em km
+  const R = 6371;
   const dLat = toRadian(lat2 - lat1);
   const dLon = toRadian(lon2 - lon1);
   const a = 
@@ -96,16 +78,10 @@ export const calculateDistance = (lat1, lon1, lat2, lon2) => {
   return R * c;
 };
 
-/**
- * Converte graus para radianos
- */
 const toRadian = (degree) => {
   return degree * (Math.PI / 180);
 };
 
-/**
- * Obtém localização atual do usuário
- */
 export const getCurrentLocation = () => {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
@@ -126,15 +102,12 @@ export const getCurrentLocation = () => {
       {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 300000 // 5 minutos
+        maximumAge: 300000
       }
     );
   });
 };
 
-/**
- * Salva no localStorage com tratamento de erro
- */
 export const saveToStorage = (key, value) => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
@@ -145,9 +118,6 @@ export const saveToStorage = (key, value) => {
   }
 };
 
-/**
- * Recupera do localStorage com tratamento de erro
- */
 export const loadFromStorage = (key, defaultValue = null) => {
   try {
     const item = localStorage.getItem(key);
@@ -158,9 +128,6 @@ export const loadFromStorage = (key, defaultValue = null) => {
   }
 };
 
-/**
- * Remove item do localStorage
- */
 export const removeFromStorage = (key) => {
   try {
     localStorage.removeItem(key);
@@ -171,54 +138,33 @@ export const removeFromStorage = (key) => {
   }
 };
 
-/**
- * Limpa todos os dados de autenticação
- */
 export const clearAuthData = () => {
   removeFromStorage(STORAGE_KEYS.TOKEN);
   removeFromStorage(STORAGE_KEYS.USER);
 };
 
-/**
- * Verifica se o usuário está autenticado
- */
 export const isAuthenticated = () => {
   const token = loadFromStorage(STORAGE_KEYS.TOKEN);
   const user = loadFromStorage(STORAGE_KEYS.USER);
   return !!(token && user);
 };
 
-/**
- * Obtém dados do usuário logado
- */
 export const getCurrentUser = () => {
   return loadFromStorage(STORAGE_KEYS.USER);
 };
 
-/**
- * Obtém token de autenticação
- */
 export const getAuthToken = () => {
   return loadFromStorage(STORAGE_KEYS.TOKEN);
 };
 
-/**
- * Verifica se é um dispositivo móvel
- */
 export const isMobile = () => {
   return window.innerWidth <= 768;
 };
 
-/**
- * Verifica se é um dispositivo touch
- */
 export const isTouchDevice = () => {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 };
 
-/**
- * Scroll suave para elemento
- */
 export const scrollToElement = (elementId, offset = 0) => {
   const element = document.getElementById(elementId);
   if (element) {
@@ -232,15 +178,11 @@ export const scrollToElement = (elementId, offset = 0) => {
   }
 };
 
-/**
- * Copia texto para clipboard
- */
 export const copyToClipboard = async (text) => {
   try {
     await navigator.clipboard.writeText(text);
     return true;
   } catch (error) {
-    // Fallback para navegadores mais antigos
     const textArea = document.createElement('textarea');
     textArea.value = text;
     document.body.appendChild(textArea);
@@ -256,23 +198,14 @@ export const copyToClipboard = async (text) => {
   }
 };
 
-/**
- * Obtém cor do status do pedido
- */
 export const getStatusColor = (status) => {
   return STATUS_PEDIDO_COLORS[status] || '#808080';
 };
 
-/**
- * Obtém label do status do pedido
- */
 export const getStatusLabel = (status) => {
   return STATUS_PEDIDO_LABELS[status] || status;
 };
 
-/**
- * Formata parâmetros de URL
- */
 export const buildQueryString = (params) => {
   const searchParams = new URLSearchParams();
   
@@ -286,9 +219,6 @@ export const buildQueryString = (params) => {
   return searchParams.toString();
 };
 
-/**
- * Parse de parâmetros de URL
- */
 export const parseQueryString = (search) => {
   const params = new URLSearchParams(search);
   const result = {};
@@ -300,9 +230,6 @@ export const parseQueryString = (search) => {
   return result;
 };
 
-/**
- * Valida se é uma URL válida
- */
 export const isValidUrl = (string) => {
   try {
     new URL(string);
@@ -312,9 +239,6 @@ export const isValidUrl = (string) => {
   }
 };
 
-/**
- * Converte arquivo para base64
- */
 export const fileToBase64 = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -324,9 +248,6 @@ export const fileToBase64 = (file) => {
   });
 };
 
-/**
- * Redimensiona imagem
- */
 export const resizeImage = (file, maxWidth = 800, maxHeight = 600, quality = 0.8) => {
   return new Promise((resolve) => {
     const canvas = document.createElement('canvas');
@@ -334,7 +255,6 @@ export const resizeImage = (file, maxWidth = 800, maxHeight = 600, quality = 0.8
     const img = new Image();
     
     img.onload = () => {
-      // Calcula novas dimensões mantendo aspect ratio
       let { width, height } = img;
       
       if (width > height) {
@@ -351,11 +271,9 @@ export const resizeImage = (file, maxWidth = 800, maxHeight = 600, quality = 0.8
       
       canvas.width = width;
       canvas.height = height;
-      
-      // Desenha a imagem redimensionada
+
       ctx.drawImage(img, 0, 0, width, height);
-      
-      // Converte para blob
+
       canvas.toBlob(resolve, file.type, quality);
     };
     
@@ -363,9 +281,6 @@ export const resizeImage = (file, maxWidth = 800, maxHeight = 600, quality = 0.8
   });
 };
 
-/**
- * Agrupa array por propriedade
- */
 export const groupBy = (array, key) => {
   return array.reduce((groups, item) => {
     const group = item[key];
@@ -375,9 +290,6 @@ export const groupBy = (array, key) => {
   }, {});
 };
 
-/**
- * Ordena array por múltiplas propriedades
- */
 export const sortBy = (array, ...keys) => {
   return array.sort((a, b) => {
     for (const key of keys) {
@@ -391,9 +303,6 @@ export const sortBy = (array, ...keys) => {
   });
 };
 
-/**
- * Remove duplicatas de array
- */
 export const unique = (array, key = null) => {
   if (key) {
     const seen = new Set();
@@ -409,9 +318,6 @@ export const unique = (array, key = null) => {
   return [...new Set(array)];
 };
 
-/**
- * Chunkifica array em grupos menores
- */
 export const chunk = (array, size) => {
   const chunks = [];
   for (let i = 0; i < array.length; i += size) {
@@ -420,16 +326,10 @@ export const chunk = (array, size) => {
   return chunks;
 };
 
-/**
- * Aguarda por um tempo específico
- */
 export const sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
 };
 
-/**
- * Retry de função com backoff exponencial
- */
 export const retry = async (fn, retries = 3, delay = 1000) => {
   try {
     return await fn();
@@ -440,16 +340,10 @@ export const retry = async (fn, retries = 3, delay = 1000) => {
   }
 };
 
-/**
- * Converte RGB para HEX
- */
 export const rgbToHex = (r, g, b) => {
   return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 };
 
-/**
- * Converte HEX para RGB
- */
 export const hexToRgb = (hex) => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? {
@@ -459,16 +353,10 @@ export const hexToRgb = (hex) => {
   } : null;
 };
 
-/**
- * Gera cor aleatória
- */
 export const randomColor = () => {
   return '#' + Math.floor(Math.random() * 16777215).toString(16);
 };
 
-/**
- * Escurece ou clareia uma cor
- */
 export const adjustColor = (hex, percent) => {
   const rgb = hexToRgb(hex);
   if (!rgb) return hex;

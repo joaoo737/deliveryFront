@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { cartStorage } from '../services/storage';
 
-// Ações do carrinho
 const CART_ACTIONS = {
   LOAD_CART: 'LOAD_CART',
   ADD_ITEM: 'ADD_ITEM',
@@ -14,7 +13,6 @@ const CART_ACTIONS = {
   SET_OBSERVACOES: 'SET_OBSERVACOES'
 };
 
-// Estado inicial do carrinho
 const initialState = {
   itens: [],
   empresaId: null,
@@ -27,7 +25,6 @@ const initialState = {
   itemCount: 0
 };
 
-// Calcular totais
 const calculateTotals = (itens) => {
   const subtotal = itens.reduce((total, item) => {
     return total + (item.precoUnitario * item.quantidade);
@@ -37,13 +34,11 @@ const calculateTotals = (itens) => {
     return total + item.quantidade;
   }, 0);
 
-  // Por enquanto, total = subtotal (sem taxas de entrega)
   const total = subtotal;
 
   return { subtotal, total, itemCount };
 };
 
-// Reducer do carrinho
 const cartReducer = (state, action) => {
   let newItens;
   let totals;
@@ -60,9 +55,7 @@ const cartReducer = (state, action) => {
     case CART_ACTIONS.ADD_ITEM:
       const { produto, quantidade } = action.payload;
       
-      // Verificar se é da mesma empresa
       if (state.empresaId && state.empresaId !== produto.empresaId) {
-        // Limpar carrinho se for de empresa diferente
         newItens = [{
           produtoId: produto.id,
           nomeProduto: produto.nome,
@@ -71,17 +64,14 @@ const cartReducer = (state, action) => {
           imagemUrl: produto.imagemUrl
         }];
       } else {
-        // Verificar se produto já existe no carrinho
         const existingItemIndex = state.itens.findIndex(
           item => item.produtoId === produto.id
         );
 
         if (existingItemIndex >= 0) {
-          // Atualizar quantidade do item existente
           newItens = [...state.itens];
           newItens[existingItemIndex].quantidade += quantidade;
         } else {
-          // Adicionar novo item
           newItens = [...state.itens, {
             produtoId: produto.id,
             nomeProduto: produto.nome,
@@ -124,7 +114,6 @@ const cartReducer = (state, action) => {
 
       totals = calculateTotals(newItens);
 
-      // Se não há mais itens, limpar empresa
       const newState = {
         ...state,
         itens: newItens,
@@ -173,24 +162,19 @@ const cartReducer = (state, action) => {
   }
 };
 
-// Criar contexto
 const CartContext = createContext();
 
-// Provider do contexto do carrinho
 export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
-  // Carregar carrinho do storage ao inicializar
   useEffect(() => {
     loadCart();
   }, []);
 
-  // Salvar carrinho no storage sempre que houver mudanças
   useEffect(() => {
     saveCart();
   }, [state]);
 
-  // Carregar carrinho do storage
   const loadCart = () => {
     try {
       const savedCart = cartStorage.getCart();
@@ -212,7 +196,6 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Salvar carrinho no storage
   const saveCart = () => {
     try {
       cartStorage.setCart(state);
@@ -221,7 +204,6 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Adicionar item ao carrinho
   const addItem = (produto, quantidade = 1) => {
     dispatch({
       type: CART_ACTIONS.ADD_ITEM,
@@ -229,7 +211,6 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // Atualizar quantidade de um item
   const updateItem = (produtoId, quantidade) => {
     if (quantidade <= 0) {
       removeItem(produtoId);
@@ -242,7 +223,6 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // Remover item do carrinho
   const removeItem = (produtoId) => {
     dispatch({
       type: CART_ACTIONS.REMOVE_ITEM,
@@ -250,12 +230,10 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // Limpar carrinho
   const clearCart = () => {
     dispatch({ type: CART_ACTIONS.CLEAR_CART });
   };
 
-  // Definir empresa
   const setEmpresa = (empresa) => {
     dispatch({
       type: CART_ACTIONS.SET_EMPRESA,
@@ -263,7 +241,6 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // Definir endereço de entrega
   const setEnderecoEntrega = (endereco) => {
     dispatch({
       type: CART_ACTIONS.SET_ENDERECO_ENTREGA,
@@ -271,7 +248,6 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // Definir forma de pagamento
   const setFormaPagamento = (forma) => {
     dispatch({
       type: CART_ACTIONS.SET_FORMA_PAGAMENTO,
@@ -279,7 +255,6 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // Definir observações
   const setObservacoes = (observacoes) => {
     dispatch({
       type: CART_ACTIONS.SET_OBSERVACOES,
@@ -287,23 +262,19 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // Verificar se produto está no carrinho
   const isInCart = (produtoId) => {
     return state.itens.some(item => item.produtoId === produtoId);
   };
 
-  // Obter quantidade de um produto no carrinho
   const getItemQuantity = (produtoId) => {
     const item = state.itens.find(item => item.produtoId === produtoId);
     return item ? item.quantidade : 0;
   };
 
-  // Verificar se carrinho está vazio
   const isEmpty = () => {
     return state.itens.length === 0;
   };
 
-  // Verificar se pode finalizar pedido
   const canCheckout = () => {
     return (
       !isEmpty() &&
@@ -313,7 +284,6 @@ export const CartProvider = ({ children }) => {
     );
   };
 
-  // Obter dados para checkout
   const getCheckoutData = () => {
     return {
       empresaId: state.empresaId,
@@ -330,14 +300,11 @@ export const CartProvider = ({ children }) => {
     };
   };
 
-  // Verificar se é de empresa diferente
   const isDifferentEmpresa = (empresaId) => {
     return state.empresaId && state.empresaId !== empresaId;
   };
 
-  // Valor do contexto
   const value = {
-    // Estado
     itens: state.itens,
     empresaId: state.empresaId,
     nomeEmpresa: state.nomeEmpresa,
@@ -348,7 +315,6 @@ export const CartProvider = ({ children }) => {
     total: state.total,
     itemCount: state.itemCount,
 
-    // Ações
     addItem,
     updateItem,
     removeItem,
@@ -358,7 +324,6 @@ export const CartProvider = ({ children }) => {
     setFormaPagamento,
     setObservacoes,
 
-    // Helpers
     isInCart,
     getItemQuantity,
     isEmpty,
@@ -376,7 +341,6 @@ export const CartProvider = ({ children }) => {
   );
 };
 
-// Hook para usar o contexto do carrinho
 export const useCart = () => {
   const context = useContext(CartContext);
   

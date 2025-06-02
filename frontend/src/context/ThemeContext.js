@@ -2,7 +2,6 @@ import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { themeStorage } from '../services/storage';
 import { THEMES } from '../utils/constants';
 
-// Ações do tema
 const THEME_ACTIONS = {
   SET_THEME: 'SET_THEME',
   TOGGLE_THEME: 'TOGGLE_THEME',
@@ -11,7 +10,6 @@ const THEME_ACTIONS = {
   RESET_PREFERENCES: 'RESET_PREFERENCES'
 };
 
-// Estado inicial
 const initialState = {
   theme: THEMES.DARK,
   fontSize: 'medium',
@@ -19,7 +17,6 @@ const initialState = {
   systemPreference: 'dark'
 };
 
-// Reducer do tema
 const themeReducer = (state, action) => {
   switch (action.type) {
     case THEME_ACTIONS.SET_THEME:
@@ -57,14 +54,11 @@ const themeReducer = (state, action) => {
   }
 };
 
-// Criar contexto
 const ThemeContext = createContext();
 
-// Provider do contexto de tema
 export const ThemeProvider = ({ children }) => {
   const [state, dispatch] = useReducer(themeReducer, initialState);
 
-  // Detectar preferência do sistema
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const systemPreference = mediaQuery.matches ? THEMES.DARK : THEMES.LIGHT;
@@ -74,10 +68,8 @@ export const ThemeProvider = ({ children }) => {
       payload: themeStorage.getTheme() || systemPreference
     });
 
-    // Escutar mudanças na preferência do sistema
     const handleChange = (e) => {
       const newSystemPreference = e.matches ? THEMES.DARK : THEMES.LIGHT;
-      // Se o usuário não definiu uma preferência manual, usar a do sistema
       if (!themeStorage.getTheme()) {
         setTheme(newSystemPreference);
       }
@@ -87,33 +79,26 @@ export const ThemeProvider = ({ children }) => {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
-  // Aplicar tema no DOM
   useEffect(() => {
     applyTheme(state.theme);
   }, [state.theme]);
 
-  // Aplicar configurações de acessibilidade
   useEffect(() => {
     applyAccessibilitySettings();
   }, [state.fontSize, state.reducedMotion]);
 
-  // Aplicar tema no documento
   const applyTheme = (theme) => {
     document.documentElement.setAttribute('data-theme', theme);
     document.body.className = `theme-${theme}`;
-    
-    // Salvar no storage
+
     themeStorage.setTheme(theme);
   };
 
-  // Aplicar configurações de acessibilidade
   const applyAccessibilitySettings = () => {
     const root = document.documentElement;
-    
-    // Font size
+
     root.setAttribute('data-font-size', state.fontSize);
-    
-    // Reduced motion
+
     if (state.reducedMotion) {
       root.style.setProperty('--animation-duration', '0ms');
       root.style.setProperty('--transition-duration', '0ms');
@@ -123,7 +108,6 @@ export const ThemeProvider = ({ children }) => {
     }
   };
 
-  // Definir tema
   const setTheme = (theme) => {
     if (Object.values(THEMES).includes(theme)) {
       dispatch({
@@ -133,12 +117,10 @@ export const ThemeProvider = ({ children }) => {
     }
   };
 
-  // Alternar tema
   const toggleTheme = () => {
     dispatch({ type: THEME_ACTIONS.TOGGLE_THEME });
   };
 
-  // Definir tamanho da fonte
   const setFontSize = (size) => {
     const validSizes = ['small', 'medium', 'large', 'extra-large'];
     if (validSizes.includes(size)) {
@@ -149,7 +131,6 @@ export const ThemeProvider = ({ children }) => {
     }
   };
 
-  // Definir movimento reduzido
   const setReducedMotion = (enabled) => {
     dispatch({
       type: THEME_ACTIONS.SET_REDUCED_MOTION,
@@ -157,18 +138,14 @@ export const ThemeProvider = ({ children }) => {
     });
   };
 
-  // Resetar preferências
   const resetPreferences = () => {
     dispatch({ type: THEME_ACTIONS.RESET_PREFERENCES });
   };
 
-  // Verificar se é tema escuro
   const isDark = () => state.theme === THEMES.DARK;
 
-  // Verificar se é tema claro
   const isLight = () => state.theme === THEMES.LIGHT;
 
-  // Obter variáveis CSS do tema atual
   const getThemeVariables = () => {
     const computedStyle = getComputedStyle(document.documentElement);
     
@@ -180,7 +157,6 @@ export const ThemeProvider = ({ children }) => {
     };
   };
 
-  // Aplicar tema personalizado
   const applyCustomTheme = (customVariables) => {
     const root = document.documentElement;
     
@@ -189,22 +165,17 @@ export const ThemeProvider = ({ children }) => {
     });
   };
 
-  // Obter contraste apropriado
   const getContrastColor = (backgroundColor) => {
-    // Converter hex para RGB
     const hex = backgroundColor.replace('#', '');
     const r = parseInt(hex.substr(0, 2), 16);
     const g = parseInt(hex.substr(2, 2), 16);
     const b = parseInt(hex.substr(4, 2), 16);
-    
-    // Calcular luminância
+
     const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    
-    // Retornar cor com bom contraste
+
     return luminance > 0.5 ? '#000000' : '#ffffff';
   };
 
-  // Verificar suporte a recursos
   const getCapabilities = () => {
     return {
       colorSchemeSupport: window.matchMedia('(prefers-color-scheme)').matches,
@@ -214,7 +185,6 @@ export const ThemeProvider = ({ children }) => {
     };
   };
 
-  // Aplicar tema baseado na hora
   const applyTimeBasedTheme = () => {
     const hour = new Date().getHours();
     const isDayTime = hour >= 6 && hour < 18;
@@ -222,22 +192,18 @@ export const ThemeProvider = ({ children }) => {
     setTheme(isDayTime ? THEMES.LIGHT : THEMES.DARK);
   };
 
-  // Valor do contexto
   const value = {
-    // Estado
     theme: state.theme,
     fontSize: state.fontSize,
     reducedMotion: state.reducedMotion,
     systemPreference: state.systemPreference,
 
-    // Ações
     setTheme,
     toggleTheme,
     setFontSize,
     setReducedMotion,
     resetPreferences,
 
-    // Helpers
     isDark,
     isLight,
     getThemeVariables,
@@ -246,7 +212,6 @@ export const ThemeProvider = ({ children }) => {
     getCapabilities,
     applyTimeBasedTheme,
 
-    // Constantes
     THEMES
   };
 
@@ -257,7 +222,6 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
-// Hook para usar o contexto de tema
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   
@@ -268,7 +232,6 @@ export const useTheme = () => {
   return context;
 };
 
-// HOC para componentes que dependem do tema
 export const withTheme = (Component) => {
   return function ThemedComponent(props) {
     const theme = useTheme();

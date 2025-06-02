@@ -3,21 +3,15 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import Loading from '../components/common/Loading/Loading';
 
-/**
- * Componente para proteger rotas que requerem autenticação
- */
 const ProtectedRoute = ({ children, requiredRole = null, fallbackPath = '/login' }) => {
   const { isAuthenticated, isLoading, user, hasPermission } = useAuth();
   const location = useLocation();
 
-  // Mostrar loading enquanto verifica autenticação
   if (isLoading) {
     return <Loading />;
   }
 
-  // Verificar se usuário está autenticado
   if (!isAuthenticated) {
-    // Salvar a rota atual para redirecionamento após login
     return (
       <Navigate 
         to={fallbackPath} 
@@ -27,12 +21,10 @@ const ProtectedRoute = ({ children, requiredRole = null, fallbackPath = '/login'
     );
   }
 
-  // Verificar se usuário tem a role necessária
   if (requiredRole && !hasPermission(requiredRole)) {
     return <Navigate to="/acesso-negado" replace />;
   }
 
-  // Verificar se conta está ativa
   if (user && user.ativo === false) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-bg-primary">
@@ -54,13 +46,9 @@ const ProtectedRoute = ({ children, requiredRole = null, fallbackPath = '/login'
     );
   }
 
-  // Renderizar componente protegido
   return children;
 };
 
-/**
- * HOC para proteger componentes
- */
 export const withProtectedRoute = (Component, options = {}) => {
   return function ProtectedComponent(props) {
     return (
@@ -71,9 +59,6 @@ export const withProtectedRoute = (Component, options = {}) => {
   };
 };
 
-/**
- * Hook para verificar se usuário pode acessar uma rota
- */
 export const useRouteAccess = (requiredRole = null) => {
   const { isAuthenticated, user, hasPermission } = useAuth();
 
@@ -98,9 +83,6 @@ export const useRouteAccess = (requiredRole = null) => {
   };
 };
 
-/**
- * Componente para renderização condicional baseada em permissões
- */
 export const ConditionalRender = ({ 
   requiredRole = null, 
   fallback = null, 

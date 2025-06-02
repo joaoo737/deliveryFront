@@ -1,9 +1,6 @@
 import React from 'react';
 import './Loading.css';
 
-/**
- * Componente de loading com diferentes variações
- */
 const Loading = ({ 
   size = 'medium', 
   variant = 'spinner',
@@ -14,8 +11,7 @@ const Loading = ({
   fullScreen = false,
   className = ''
 }) => {
-  
-  // Classes CSS baseadas nas props
+
   const sizeClasses = {
     small: 'loading-small',
     medium: 'loading-medium',
@@ -30,7 +26,6 @@ const Loading = ({
 
   const baseClasses = `loading-container ${sizeClasses[size]} ${colorClasses[color]} ${className}`;
 
-  // Renderizar spinner
   const renderSpinner = () => (
     <div className="loading-spinner">
       <div className="spinner-ring">
@@ -42,7 +37,6 @@ const Loading = ({
     </div>
   );
 
-  // Renderizar dots
   const renderDots = () => (
     <div className="loading-dots">
       <div className="dot"></div>
@@ -51,14 +45,12 @@ const Loading = ({
     </div>
   );
 
-  // Renderizar pulse
   const renderPulse = () => (
     <div className="loading-pulse">
       <div className="pulse-circle"></div>
     </div>
   );
 
-  // Renderizar bars
   const renderBars = () => (
     <div className="loading-bars">
       <div className="bar"></div>
@@ -68,7 +60,6 @@ const Loading = ({
     </div>
   );
 
-  // Selecionar variante do loading
   const renderLoading = () => {
     switch (variant) {
       case 'dots':
@@ -83,7 +74,6 @@ const Loading = ({
     }
   };
 
-  // Conteúdo do loading
   const loadingContent = (
     <div className={baseClasses}>
       {renderLoading()}
@@ -93,7 +83,6 @@ const Loading = ({
     </div>
   );
 
-  // Full screen loading
   if (fullScreen) {
     return (
       <div className="loading-fullscreen">
@@ -102,7 +91,6 @@ const Loading = ({
     );
   }
 
-  // Overlay loading
   if (overlay) {
     return (
       <div className="loading-overlay">
@@ -111,13 +99,9 @@ const Loading = ({
     );
   }
 
-  // Loading inline
   return loadingContent;
 };
 
-/**
- * Componente de skeleton loading para cards
- */
 export const SkeletonCard = ({ className = '' }) => (
   <div className={`skeleton-card ${className}`}>
     <div className="skeleton-image"></div>
@@ -129,9 +113,6 @@ export const SkeletonCard = ({ className = '' }) => (
   </div>
 );
 
-/**
- * Componente de skeleton loading para listas
- */
 export const SkeletonList = ({ items = 3, className = '' }) => (
   <div className={`skeleton-list ${className}`}>
     {Array.from({ length: items }).map((_, index) => (
@@ -146,9 +127,6 @@ export const SkeletonList = ({ items = 3, className = '' }) => (
   </div>
 );
 
-/**
- * Componente de skeleton loading para texto
- */
 export const SkeletonText = ({ lines = 3, className = '' }) => (
   <div className={`skeleton-text-container ${className}`}>
     {Array.from({ length: lines }).map((_, index) => (
@@ -160,9 +138,6 @@ export const SkeletonText = ({ lines = 3, className = '' }) => (
   </div>
 );
 
-/**
- * Componente de loading para botões
- */
 export const ButtonLoading = ({ 
   size = 'medium',
   variant = 'spinner',
@@ -196,9 +171,6 @@ export const ButtonLoading = ({
   );
 };
 
-/**
- * HOC para adicionar loading a componentes
- */
 export const withLoading = (Component, LoadingComponent = Loading) => {
   return function LoadingWrapper({ isLoading, loadingProps, ...props }) {
     if (isLoading) {
@@ -208,9 +180,6 @@ export const withLoading = (Component, LoadingComponent = Loading) => {
   };
 };
 
-/**
- * Hook para controlar estado de loading
- */
 export const useLoading = (initialState = false) => {
   const [isLoading, setIsLoading] = React.useState(initialState);
 

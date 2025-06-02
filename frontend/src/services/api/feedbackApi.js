@@ -1,13 +1,8 @@
 import { api } from '../httpClient';
 import { API_ENDPOINTS } from '../../utils/constants';
 
-/**
- * API de feedbacks
- */
 export const feedbackApi = {
-  /**
-   * Cria feedback para pedido (cliente)
-   */
+
   criarFeedback: async (pedidoId, dadosFeedback) => {
     try {
       const response = await api.post(
@@ -20,9 +15,6 @@ export const feedbackApi = {
     }
   },
 
-  /**
-   * Lista feedbacks da empresa (empresa)
-   */
   listarFeedbacksEmpresa: async (params = {}) => {
     try {
       const response = await api.get(API_ENDPOINTS.EMPRESA.FEEDBACKS, params);
@@ -32,9 +24,6 @@ export const feedbackApi = {
     }
   },
 
-  /**
-   * Obtém estatísticas de feedbacks (empresa)
-   */
   obterEstatisticasEmpresa: async () => {
     try {
       const response = await api.get(`${API_ENDPOINTS.EMPRESA.FEEDBACKS}/estatisticas`);
@@ -45,13 +34,7 @@ export const feedbackApi = {
   }
 };
 
-/**
- * Hooks para feedbacks
- */
 export const feedbackHooks = {
-  /**
-   * Hook para feedbacks da empresa
-   */
   useFeedbacksEmpresa: (filtros = {}) => {
     const [feedbacks, setFeedbacks] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
@@ -88,9 +71,6 @@ export const feedbackHooks = {
     };
   },
 
-  /**
-   * Hook para estatísticas de feedbacks
-   */
   useEstatisticasFeedbacks: () => {
     const [estatisticas, setEstatisticas] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -121,9 +101,6 @@ export const feedbackHooks = {
     };
   },
 
-  /**
-   * Hook para criar feedback
-   */
   useCreateFeedback: () => {
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
@@ -150,13 +127,7 @@ export const feedbackHooks = {
   }
 };
 
-/**
- * Helpers para feedbacks
- */
 export const feedbackHelpers = {
-  /**
-   * Formata dados do feedback para envio
-   */
   formatarFeedbackParaEnvio: (dados) => {
     return {
       nota: parseInt(dados.nota),
@@ -164,9 +135,6 @@ export const feedbackHelpers = {
     };
   },
 
-  /**
-   * Valida dados do feedback
-   */
   validarFeedback: (dados) => {
     const erros = {};
 
@@ -184,9 +152,6 @@ export const feedbackHelpers = {
     };
   },
 
-  /**
-   * Formata nota com estrelas
-   */
   formatarEstrelas: (nota) => {
     const estrelaCheia = '★';
     const estrelaVazia = '☆';
@@ -198,19 +163,13 @@ export const feedbackHelpers = {
     return resultado;
   },
 
-  /**
-   * Obtém cor da nota
-   */
   obterCorNota: (nota) => {
-    if (nota >= 4) return '#28a745'; // Verde
-    if (nota >= 3) return '#ffc107'; // Amarelo
-    if (nota >= 2) return '#fd7e14'; // Laranja
-    return '#dc3545'; // Vermelho
+    if (nota >= 4) return '#28a745'; 
+    if (nota >= 3) return '#ffc107'; 
+    if (nota >= 2) return '#fd7e14'; 
+    return '#dc3545';
   },
 
-  /**
-   * Obtém descrição da nota
-   */
   obterDescricaoNota: (nota) => {
     const descricoes = {
       1: 'Muito ruim',
@@ -222,9 +181,6 @@ export const feedbackHelpers = {
     return descricoes[nota] || 'Não avaliado';
   },
 
-  /**
-   * Calcula estatísticas de feedbacks
-   */
   calcularEstatisticas: (feedbacks) => {
     if (!feedbacks || feedbacks.length === 0) {
       return {
@@ -259,27 +215,18 @@ export const feedbackHelpers = {
     };
   },
 
-  /**
-   * Filtra feedbacks por nota
-   */
   filtrarPorNota: (feedbacks, notaMinima = 1, notaMaxima = 5) => {
     return feedbacks.filter(feedback => 
       feedback.nota >= notaMinima && feedback.nota <= notaMaxima
     );
   },
 
-  /**
-   * Filtra feedbacks com comentários
-   */
   filtrarComComentarios: (feedbacks) => {
     return feedbacks.filter(feedback => 
       feedback.comentario && feedback.comentario.trim()
     );
   },
 
-  /**
-   * Ordena feedbacks
-   */
   ordenarFeedbacks: (feedbacks, criterio = 'data', direcao = 'desc') => {
     return [...feedbacks].sort((a, b) => {
       let valorA, valorB;
@@ -307,9 +254,6 @@ export const feedbackHelpers = {
     });
   },
 
-  /**
-   * Agrupa feedbacks por nota
-   */
   agruparPorNota: (feedbacks) => {
     return feedbacks.reduce((grupos, feedback) => {
       const nota = feedback.nota;
@@ -321,9 +265,6 @@ export const feedbackHelpers = {
     }, {});
   },
 
-  /**
-   * Busca feedbacks por texto
-   */
   buscarPorTexto: (feedbacks, texto) => {
     if (!texto) return feedbacks;
     
@@ -334,9 +275,6 @@ export const feedbackHelpers = {
     );
   },
 
-  /**
-   * Formata data do feedback
-   */
   formatarData: (data) => {
     return new Intl.DateTimeFormat('pt-BR', {
       day: '2-digit',
@@ -347,9 +285,7 @@ export const feedbackHelpers = {
     }).format(new Date(data));
   },
 
-  /**
-   * Formata tempo relativo
-   */
+
   formatarTempoRelativo: (data) => {
     const agora = new Date();
     const feedback = new Date(data);
@@ -369,9 +305,6 @@ export const feedbackHelpers = {
     }
   },
 
-  /**
-   * Gera resumo do feedback
-   */
   gerarResumo: (feedback) => {
     return {
       id: feedback.id,
@@ -388,9 +321,6 @@ export const feedbackHelpers = {
     };
   },
 
-  /**
-   * Calcula distribuição percentual das notas
-   */
   calcularDistribuicaoPercentual: (feedbacks) => {
     const estatisticas = feedbackHelpers.calcularEstatisticas(feedbacks);
     const total = estatisticas.total;
@@ -407,16 +337,10 @@ export const feedbackHelpers = {
     return distribuicaoPercentual;
   },
 
-  /**
-   * Obtém feedbacks recentes
-   */
   obterRecentes: (feedbacks, limite = 5) => {
     return feedbackHelpers.ordenarFeedbacks(feedbacks, 'data', 'desc').slice(0, limite);
   },
 
-  /**
-   * Obtém feedbacks destacados (notas altas com comentários)
-   */
   obterDestacados: (feedbacks, limite = 3) => {
     return feedbacks
       .filter(f => f.nota >= 4 && f.comentario && f.comentario.trim())
@@ -425,9 +349,6 @@ export const feedbackHelpers = {
   }
 };
 
-/**
- * Constantes para feedbacks
- */
 export const FEEDBACK_CONSTANTS = {
   NOTAS: [
     { value: 1, label: 'Muito ruim', emoji: '😞' },

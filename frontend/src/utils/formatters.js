@@ -1,6 +1,4 @@
-/**
- * Formata valor monetário para o formato brasileiro
- */
+
 export const formatCurrency = (value) => {
   if (value === null || value === undefined || isNaN(value)) return 'R$ 0,00';
   
@@ -10,9 +8,6 @@ export const formatCurrency = (value) => {
   }).format(value);
 };
 
-/**
- * Formata número com separadores de milhares
- */
 export const formatNumber = (value, decimals = 0) => {
   if (value === null || value === undefined || isNaN(value)) return '0';
   
@@ -22,9 +17,6 @@ export const formatNumber = (value, decimals = 0) => {
   }).format(value);
 };
 
-/**
- * Formata porcentagem
- */
 export const formatPercentage = (value, decimals = 1) => {
   if (value === null || value === undefined || isNaN(value)) return '0%';
   
@@ -35,9 +27,6 @@ export const formatPercentage = (value, decimals = 1) => {
   }).format(value / 100);
 };
 
-/**
- * Formata data para o formato brasileiro
- */
 export const formatDate = (date) => {
   if (!date) return '';
   
@@ -50,9 +39,6 @@ export const formatDate = (date) => {
   }).format(dateObj);
 };
 
-/**
- * Formata data e hora para o formato brasileiro
- */
 export const formatDateTime = (date) => {
   if (!date) return '';
   
@@ -67,9 +53,6 @@ export const formatDateTime = (date) => {
   }).format(dateObj);
 };
 
-/**
- * Formata apenas a hora
- */
 export const formatTime = (date) => {
   if (!date) return '';
   
@@ -81,9 +64,6 @@ export const formatTime = (date) => {
   }).format(dateObj);
 };
 
-/**
- * Formata data de forma relativa (há 2 dias, há 1 hora, etc.)
- */
 export const formatRelativeTime = (date) => {
   if (!date) return '';
   
@@ -118,9 +98,6 @@ export const formatRelativeTime = (date) => {
   return formatDate(dateObj);
 };
 
-/**
- * Formata CPF
- */
 export const formatCPF = (cpf) => {
   if (!cpf) return '';
   
@@ -133,9 +110,6 @@ export const formatCPF = (cpf) => {
   return cpf;
 };
 
-/**
- * Formata CNPJ
- */
 export const formatCNPJ = (cnpj) => {
   if (!cnpj) return '';
   
@@ -148,9 +122,6 @@ export const formatCNPJ = (cnpj) => {
   return cnpj;
 };
 
-/**
- * Formata telefone
- */
 export const formatPhone = (phone) => {
   if (!phone) return '';
   
@@ -165,9 +136,6 @@ export const formatPhone = (phone) => {
   return phone;
 };
 
-/**
- * Formata CEP
- */
 export const formatCEP = (cep) => {
   if (!cep) return '';
   
@@ -180,26 +148,17 @@ export const formatCEP = (cep) => {
   return cep;
 };
 
-/**
- * Trunca texto com ellipsis
- */
 export const truncateText = (text, maxLength) => {
   if (!text) return '';
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength) + '...';
 };
 
-/**
- * Capitaliza primeira letra
- */
 export const capitalize = (text) => {
   if (!text) return '';
   return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 };
 
-/**
- * Capitaliza todas as palavras
- */
 export const capitalizeWords = (text) => {
   if (!text) return '';
   return text.replace(/\w\S*/g, (txt) => 
@@ -207,49 +166,31 @@ export const capitalizeWords = (text) => {
   );
 };
 
-/**
- * Remove formatação de números
- */
 export const unformatNumber = (formattedNumber) => {
   if (!formattedNumber) return 0;
   return parseFloat(formattedNumber.toString().replace(/[^\d,-]/g, '').replace(',', '.'));
 };
 
-/**
- * Remove formatação de telefone
- */
 export const unformatPhone = (formattedPhone) => {
   if (!formattedPhone) return '';
   return formattedPhone.replace(/\D/g, '');
 };
 
-/**
- * Remove formatação de CPF
- */
 export const unformatCPF = (formattedCPF) => {
   if (!formattedCPF) return '';
   return formattedCPF.replace(/\D/g, '');
 };
 
-/**
- * Remove formatação de CNPJ
- */
 export const unformatCNPJ = (formattedCNPJ) => {
   if (!formattedCNPJ) return '';
   return formattedCNPJ.replace(/\D/g, '');
 };
 
-/**
- * Remove formatação de CEP
- */
 export const unformatCEP = (formattedCEP) => {
   if (!formattedCEP) return '';
   return formattedCEP.replace(/\D/g, '');
 };
 
-/**
- * Formata tamanho de arquivo
- */
 export const formatFileSize = (bytes) => {
   if (bytes === 0) return '0 Bytes';
   
@@ -260,9 +201,6 @@ export const formatFileSize = (bytes) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 };
 
-/**
- * Formata distância em metros/quilômetros
- */
 export const formatDistance = (meters) => {
   if (meters < 1000) {
     return `${Math.round(meters)}m`;
@@ -271,9 +209,6 @@ export const formatDistance = (meters) => {
   }
 };
 
-/**
- * Formata duração em minutos/horas
- */
 export const formatDuration = (minutes) => {
   if (minutes < 60) {
     return `${minutes} min`;
@@ -288,9 +223,6 @@ export const formatDuration = (minutes) => {
   }
 };
 
-/**
- * Formata avaliação com estrelas
- */
 export const formatRatingStars = (rating) => {
   if (!rating) return '☆☆☆☆☆';
   
@@ -303,33 +235,24 @@ export const formatRatingStars = (rating) => {
          '☆'.repeat(emptyStars);
 };
 
-/**
- * Formata número ordinal
- */
 export const formatOrdinal = (number) => {
   const suffixes = ['º', 'ª'];
   return number + 'º';
 };
 
-/**
- * Formata texto para slug (URL amigável)
- */
 export const formatSlug = (text) => {
   if (!text) return '';
   
   return text
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // Remove acentos
-    .replace(/[^a-z0-9 -]/g, '') // Remove caracteres especiais
-    .replace(/\s+/g, '-') // Substitui espaços por hífens
-    .replace(/-+/g, '-') // Remove hífens duplicados
-    .trim('-'); // Remove hífens do início e fim
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9 -]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim('-'); 
 };
 
-/**
- * Formata texto para busca (normaliza)
- */
 export const formatSearchText = (text) => {
   if (!text) return '';
   
@@ -340,9 +263,6 @@ export const formatSearchText = (text) => {
     .trim();
 };
 
-/**
- * Máscara para entrada de dados em tempo real
- */
 export const applyMask = (value, mask) => {
   if (!value || !mask) return value;
   
@@ -362,7 +282,6 @@ export const applyMask = (value, mask) => {
   return maskedValue;
 };
 
-// Máscaras predefinidas
 export const MASKS = {
   CPF: '###.###.###-##',
   CNPJ: '##.###.###/####-##',

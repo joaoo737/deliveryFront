@@ -1,8 +1,8 @@
-// URLs da API
+
 export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
 
 export const API_ENDPOINTS = {
-  // Auth
+
   AUTH: {
     LOGIN: '/auth/login',
     REGISTER: '/auth/register',
@@ -10,15 +10,13 @@ export const API_ENDPOINTS = {
     VALIDATE_TOKEN: '/auth/user/validate-token',
     REFRESH: '/auth/user/refresh'
   },
-  
-  // Cliente
+
   CLIENTE: {
     PERFIL: '/cliente/perfil',
     PEDIDOS: '/cliente/pedidos',
     FEEDBACKS: '/cliente/feedbacks'
   },
-  
-  // Empresa
+
   EMPRESA: {
     PERFIL: '/empresa/perfil',
     PRODUTOS: '/empresa/produtos',
@@ -26,14 +24,12 @@ export const API_ENDPOINTS = {
     FEEDBACKS: '/empresa/feedbacks',
     RELATORIOS: '/empresa/relatorios'
   },
-  
-  // Público
+
   PUBLICO: {
     BUSCA: '/publico/busca',
     CATEGORIAS: '/publico/categorias'
   },
-  
-  // Admin
+
   ADMIN: {
     DASHBOARD: '/admin/dashboard',
     EMPRESAS: '/admin/empresas',
@@ -41,7 +37,6 @@ export const API_ENDPOINTS = {
   }
 };
 
-// Status dos pedidos
 export const STATUS_PEDIDO = {
   PENDENTE: 'PENDENTE',
   CONFIRMADO: 'CONFIRMADO',
@@ -69,7 +64,6 @@ export const STATUS_PEDIDO_COLORS = {
   [STATUS_PEDIDO.CANCELADO]: '#dc3545'
 };
 
-// Status de pagamento
 export const STATUS_PAGAMENTO = {
   PENDENTE: 'PENDENTE',
   PAGO: 'PAGO',
@@ -82,7 +76,6 @@ export const STATUS_PAGAMENTO_LABELS = {
   [STATUS_PAGAMENTO.CANCELADO]: 'Cancelado'
 };
 
-// Formas de pagamento
 export const FORMA_PAGAMENTO = {
   DINHEIRO: 'DINHEIRO',
   CARTAO_CREDITO: 'CARTAO_CREDITO',
@@ -97,7 +90,6 @@ export const FORMA_PAGAMENTO_LABELS = {
   [FORMA_PAGAMENTO.PIX]: 'PIX'
 };
 
-// Tipos de usuário
 export const TIPO_USUARIO = {
   CLIENTE: 'CLIENTE',
   EMPRESA: 'EMPRESA',
@@ -110,7 +102,6 @@ export const TIPO_USUARIO_LABELS = {
   [TIPO_USUARIO.ADMIN]: 'Administrador'
 };
 
-// Configurações de paginação
 export const PAGINATION = {
   DEFAULT_PAGE: 0,
   DEFAULT_SIZE: 20,
@@ -118,7 +109,6 @@ export const PAGINATION = {
   SIZES: [10, 20, 50, 100]
 };
 
-// Mensagens de erro
 export const ERROR_MESSAGES = {
   NETWORK_ERROR: 'Erro de conexão. Verifique sua internet.',
   UNAUTHORIZED: 'Acesso não autorizado. Faça login novamente.',
@@ -129,7 +119,6 @@ export const ERROR_MESSAGES = {
   GENERIC_ERROR: 'Ocorreu um erro inesperado.'
 };
 
-// Mensagens de sucesso
 export const SUCCESS_MESSAGES = {
   SAVE_SUCCESS: 'Salvo com sucesso!',
   UPDATE_SUCCESS: 'Atualizado com sucesso!',
@@ -139,7 +128,6 @@ export const SUCCESS_MESSAGES = {
   REGISTER_SUCCESS: 'Cadastro realizado com sucesso!'
 };
 
-// Validações
 export const VALIDATION = {
   EMAIL_REGEX: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   CPF_REGEX: /^\d{11}$/,
@@ -164,14 +152,12 @@ export const VALIDATION = {
   MAX_RATING: 5
 };
 
-// Configurações de upload
 export const UPLOAD = {
-  MAX_FILE_SIZE: 10 * 1024 * 1024, // 10MB
+  MAX_FILE_SIZE: 10 * 1024 * 1024,
   ALLOWED_IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
   ALLOWED_EXTENSIONS: ['.jpg', '.jpeg', '.png', '.gif', '.webp']
 };
 
-// Configurações de localização
 export const LOCATION = {
   DEFAULT_LATITUDE: -28.4818,
   DEFAULT_LONGITUDE: -49.0047,
@@ -179,7 +165,6 @@ export const LOCATION = {
   MAX_RADIUS: 50
 };
 
-// Breakpoints responsivos
 export const BREAKPOINTS = {
   XS: 0,
   SM: 576,
@@ -189,13 +174,11 @@ export const BREAKPOINTS = {
   XXL: 1400
 };
 
-// Temas
 export const THEMES = {
   DARK: 'dark',
   LIGHT: 'light'
 };
 
-// Configurações de notificação
 export const NOTIFICATION = {
   DURATION: {
     SHORT: 3000,
@@ -210,7 +193,6 @@ export const NOTIFICATION = {
   }
 };
 
-// Formato de data/hora
 export const DATE_FORMATS = {
   DATE: 'dd/MM/yyyy',
   DATETIME: 'dd/MM/yyyy HH:mm',
@@ -219,7 +201,6 @@ export const DATE_FORMATS = {
   ISO_DATETIME: 'yyyy-MM-dd HH:mm:ss'
 };
 
-// Storage keys
 export const STORAGE_KEYS = {
   TOKEN: 'delivery_token',
   USER: 'delivery_user',
@@ -229,7 +210,6 @@ export const STORAGE_KEYS = {
   LOCATION: 'delivery_location'
 };
 
-// Configurações do mapa
 export const MAP_CONFIG = {
   DEFAULT_ZOOM: 14,
   MIN_ZOOM: 10,
@@ -238,7 +218,6 @@ export const MAP_CONFIG = {
   ATTRIBUTION: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 };
 
-// Configurações de animação
 export const ANIMATION = {
   DURATION: {
     FAST: 150,

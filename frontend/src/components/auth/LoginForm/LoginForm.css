@@ -1,4 +1,3 @@
-/* Login Form Styles */
 .login-form {
   width: 100%;
   max-width: 400px;
@@ -28,7 +27,6 @@
   line-height: var(--line-height-relaxed);
 }
 
-/* Form Styles */
 .login-form__form {
   display: flex;
   flex-direction: column;
@@ -57,7 +55,6 @@
   font-weight: var(--font-weight-medium);
 }
 
-/* Field Styles */
 .login-form__field {
   display: flex;
   flex-direction: column;
@@ -108,7 +105,6 @@
   box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.3);
 }
 
-/* Password Field */
 .login-form__password-field {
   position: relative;
   display: flex;
@@ -147,7 +143,6 @@
   cursor: not-allowed;
 }
 
-/* Field Error */
 .login-form__field-error {
   font-size: var(--font-size-xs);
   color: var(--error-color);
@@ -155,7 +150,6 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Submit Button */
 .login-form__submit {
   width: 100%;
   padding: var(--spacing-md) var(--spacing-lg);
@@ -191,7 +185,6 @@
   transform: none;
 }
 
-/* Footer */
 .login-form__footer {
   margin-top: var(--spacing-xl);
   text-align: center;
@@ -214,7 +207,6 @@
   text-decoration: underline;
 }
 
-/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -226,12 +218,10 @@
   }
 }
 
-/* Loading state */
 .login-form__submit .btn-loading {
   color: var(--text-primary);
 }
 
-/* Responsividade */
 @media (max-width: 480px) {
   .login-form {
     padding: var(--spacing-lg);
@@ -268,7 +258,6 @@
   }
 }
 
-/* Estados de focus para acessibilidade */
 .login-form__password-toggle:focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
@@ -279,7 +268,6 @@
   outline-offset: 2px;
 }
 
-/* Alto contraste */
 @media (prefers-contrast: high) {
   .login-form__input {
     border-width: 2px;
@@ -294,7 +282,6 @@
   }
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .login-form__error,
   .login-form__field-error {

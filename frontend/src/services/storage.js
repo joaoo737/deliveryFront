@@ -1,16 +1,10 @@
 import { STORAGE_KEYS } from '../utils/constants';
 
-/**
- * Service para gerenciar localStorage de forma segura
- */
 class StorageService {
   constructor() {
     this.isAvailable = this.checkAvailability();
   }
 
-  /**
-   * Verifica se localStorage está disponível
-   */
   checkAvailability() {
     try {
       const test = '__storage_test__';
@@ -23,9 +17,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Salva item no localStorage
-   */
   setItem(key, value) {
     if (!this.isAvailable) {
       console.warn('localStorage não disponível');
@@ -42,9 +33,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Recupera item do localStorage
-   */
   getItem(key, defaultValue = null) {
     if (!this.isAvailable) {
       return defaultValue;
@@ -59,9 +47,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Remove item do localStorage
-   */
   removeItem(key) {
     if (!this.isAvailable) {
       return false;
@@ -76,9 +61,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Limpa todo o localStorage
-   */
   clear() {
     if (!this.isAvailable) {
       return false;
@@ -93,9 +75,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Verifica se uma chave existe
-   */
   hasItem(key) {
     if (!this.isAvailable) {
       return false;
@@ -104,9 +83,6 @@ class StorageService {
     return localStorage.getItem(key) !== null;
   }
 
-  /**
-   * Obtém todas as chaves
-   */
   getAllKeys() {
     if (!this.isAvailable) {
       return [];
@@ -120,9 +96,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Obtém o tamanho usado do localStorage
-   */
   getSize() {
     if (!this.isAvailable) {
       return 0;
@@ -142,9 +115,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Salva item com expiração
-   */
   setItemWithExpiry(key, value, ttl) {
     if (!this.isAvailable) {
       return false;
@@ -164,9 +134,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Recupera item verificando expiração
-   */
   getItemWithExpiry(key, defaultValue = null) {
     if (!this.isAvailable) {
       return defaultValue;
@@ -194,14 +161,8 @@ class StorageService {
   }
 }
 
-// Instância única do serviço
 const storageService = new StorageService();
 
-// Funções específicas para dados da aplicação
-
-/**
- * Gerencia token de autenticação
- */
 export const authStorage = {
   setToken: (token) => {
     return storageService.setItem(STORAGE_KEYS.TOKEN, token);
@@ -220,9 +181,6 @@ export const authStorage = {
   }
 };
 
-/**
- * Gerencia dados do usuário
- */
 export const userStorage = {
   setUser: (user) => {
     return storageService.setItem(STORAGE_KEYS.USER, user);
@@ -250,9 +208,6 @@ export const userStorage = {
   }
 };
 
-/**
- * Gerencia carrinho de compras
- */
 export const cartStorage = {
   setCart: (cart) => {
     return storageService.setItem(STORAGE_KEYS.CART, cart);
@@ -310,9 +265,6 @@ export const cartStorage = {
   }
 };
 
-/**
- * Gerencia tema da aplicação
- */
 export const themeStorage = {
   setTheme: (theme) => {
     return storageService.setItem(STORAGE_KEYS.THEME, theme);
@@ -330,9 +282,6 @@ export const themeStorage = {
   }
 };
 
-/**
- * Gerencia localização do usuário
- */
 export const locationStorage = {
   setLocation: (location) => {
     return storageService.setItemWithExpiry(STORAGE_KEYS.LOCATION, location, 5 * 60 * 1000); // 5 minutos
@@ -351,9 +300,6 @@ export const locationStorage = {
   }
 };
 
-/**
- * Gerencia configurações da aplicação
- */
 export const settingsStorage = {
   setSetting: (key, value) => {
     const settings = settingsStorage.getAllSettings();
@@ -381,9 +327,6 @@ export const settingsStorage = {
   }
 };
 
-/**
- * Gerencia cache de dados
- */
 export const cacheStorage = {
   setCache: (key, data, ttl = 10 * 60 * 1000) => { // 10 minutos por padrão
     return storageService.setItemWithExpiry(`cache_${key}`, data, ttl);
@@ -407,9 +350,6 @@ export const cacheStorage = {
   }
 };
 
-/**
- * Limpa todos os dados da aplicação
- */
 export const clearAllAppData = () => {
   authStorage.removeToken();
   userStorage.removeUser();
@@ -419,7 +359,4 @@ export const clearAllAppData = () => {
   settingsStorage.clearSettings();
 };
 
-/**
- * Exporta o serviço principal
- */
 export default storageService;

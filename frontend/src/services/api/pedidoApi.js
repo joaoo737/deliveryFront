@@ -1,14 +1,8 @@
 import { api } from '../httpClient';
 import { API_ENDPOINTS, STATUS_PEDIDO, STATUS_PAGAMENTO } from '../../utils/constants';
 
-/**
- * API de pedidos
- */
 export const pedidoApi = {
-  /**
-   * Cria novo pedido (cliente)
-   */
-  criarPedido: async (dadosPedido) => {
+do: async (dadosPedido) => {
     try {
       const response = await api.post(API_ENDPOINTS.CLIENTE.PEDIDOS, dadosPedido);
       return response;
@@ -17,9 +11,6 @@ export const pedidoApi = {
     }
   },
 
-  /**
-   * Lista pedidos do cliente
-   */
   listarPedidosCliente: async (params = {}) => {
     try {
       const response = await api.get(API_ENDPOINTS.CLIENTE.PEDIDOS, params);
@@ -29,9 +20,6 @@ export const pedidoApi = {
     }
   },
 
-  /**
-   * Lista pedidos da empresa
-   */
   listarPedidosEmpresa: async (params = {}) => {
     try {
       const response = await api.get(API_ENDPOINTS.EMPRESA.PEDIDOS, params);
@@ -41,9 +29,6 @@ export const pedidoApi = {
     }
   },
 
-  /**
-   * Busca pedido por ID (cliente)
-   */
   buscarPedidoCliente: async (pedidoId) => {
     try {
       const response = await api.get(`${API_ENDPOINTS.CLIENTE.PEDIDOS}/${pedidoId}`);
@@ -53,9 +38,6 @@ export const pedidoApi = {
     }
   },
 
-  /**
-   * Lista pedidos por status (cliente)
-   */
   listarPorStatusCliente: async (status, params = {}) => {
     try {
       const response = await api.get(
@@ -68,9 +50,6 @@ export const pedidoApi = {
     }
   },
 
-  /**
-   * Cancela pedido (cliente)
-   */
   cancelarPedido: async (pedidoId) => {
     try {
       const response = await api.patch(`${API_ENDPOINTS.CLIENTE.PEDIDOS}/${pedidoId}/cancelar`);
@@ -80,9 +59,6 @@ export const pedidoApi = {
     }
   },
 
-  /**
-   * Rastreia pedido (cliente)
-   */
   rastrearPedido: async (pedidoId) => {
     try {
       const response = await api.post(`${API_ENDPOINTS.CLIENTE.PEDIDOS}/${pedidoId}/rastrear`);
@@ -92,9 +68,6 @@ export const pedidoApi = {
     }
   },
 
-  /**
-   * Realiza pagamento do pedido (cliente)
-   */
   pagarPedido: async (pedidoId) => {
     try {
       const response = await api.post(`${API_ENDPOINTS.CLIENTE.PEDIDOS}/${pedidoId}/pagar`);
@@ -104,9 +77,6 @@ export const pedidoApi = {
     }
   },
 
-  /**
-   * Atualiza status do pedido (empresa)
-   */
   atualizarStatus: async (pedidoId, novoStatus) => {
     try {
       const response = await api.patch(
@@ -120,9 +90,6 @@ export const pedidoApi = {
     }
   },
 
-  /**
-   * Obtém estatísticas de pedidos (cliente)
-   */
   obterEstatisticasCliente: async () => {
     try {
       const response = await api.get(`${API_ENDPOINTS.CLIENTE.PEDIDOS}/estatisticas`);
@@ -133,13 +100,7 @@ export const pedidoApi = {
   }
 };
 
-/**
- * Hooks para pedidos
- */
 export const pedidoHooks = {
-  /**
-   * Hook para lista de pedidos
-   */
   usePedidos: (tipo = 'cliente', filtros = {}) => {
     const [pedidos, setPedidos] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
@@ -174,7 +135,6 @@ export const pedidoHooks = {
         setLoading(true);
         setError(null);
         const response = await pedidoApi.criarPedido(dadosPedido);
-        // Recarregar lista
         await carregarPedidos();
         return response;
       } catch (err) {
@@ -190,7 +150,6 @@ export const pedidoHooks = {
         setLoading(true);
         setError(null);
         const response = await pedidoApi.atualizarStatus(pedidoId, novoStatus);
-        // Atualizar pedido na lista
         setPedidos(prev => prev.map(pedido => 
           pedido.id === pedidoId ? response : pedido
         ));
@@ -218,9 +177,6 @@ export const pedidoHooks = {
     };
   },
 
-  /**
-   * Hook para pedido específico
-   */
   usePedido: (pedidoId) => {
     const [pedido, setPedido] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -302,9 +258,6 @@ export const pedidoHooks = {
     };
   },
 
-  /**
-   * Hook para estatísticas de pedidos
-   */
   useEstatisticasPedidos: () => {
     const [estatisticas, setEstatisticas] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -336,13 +289,7 @@ export const pedidoHooks = {
   }
 };
 
-/**
- * Helpers para pedidos
- */
 export const pedidoHelpers = {
-  /**
-   * Formata dados do pedido para criação
-   */
   formatarPedidoParaCriacao: (dadosCarrinho) => {
     return {
       empresaId: dadosCarrinho.empresaId,
@@ -358,18 +305,12 @@ export const pedidoHelpers = {
     };
   },
 
-  /**
-   * Calcula total do pedido
-   */
   calcularTotal: (itens) => {
     return itens.reduce((total, item) => {
       return total + (item.precoUnitario * item.quantidade);
     }, 0);
   },
 
-  /**
-   * Formata valor monetário
-   */
   formatarValor: (valor) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
@@ -377,9 +318,6 @@ export const pedidoHelpers = {
     }).format(valor || 0);
   },
 
-  /**
-   * Obtém cor do status do pedido
-   */
   obterCorStatus: (status) => {
     const cores = {
       [STATUS_PEDIDO.PENDENTE]: '#ffc107',
@@ -392,9 +330,6 @@ export const pedidoHelpers = {
     return cores[status] || '#6c757d';
   },
 
-  /**
-   * Obtém label do status do pedido
-   */
   obterLabelStatus: (status) => {
     const labels = {
       [STATUS_PEDIDO.PENDENTE]: 'Pendente',
@@ -407,9 +342,6 @@ export const pedidoHelpers = {
     return labels[status] || status;
   },
 
-  /**
-   * Obtém cor do status de pagamento
-   */
   obterCorStatusPagamento: (status) => {
     const cores = {
       [STATUS_PAGAMENTO.PENDENTE]: '#ffc107',
@@ -419,32 +351,20 @@ export const pedidoHelpers = {
     return cores[status] || '#6c757d';
   },
 
-  /**
-   * Verifica se pedido pode ser cancelado
-   */
   podeCancelar: (pedido) => {
     const statusCancelaveis = [STATUS_PEDIDO.PENDENTE, STATUS_PEDIDO.CONFIRMADO];
     return statusCancelaveis.includes(pedido.status);
   },
 
-  /**
-   * Verifica se pedido pode ser pago
-   */
   podePagar: (pedido) => {
     return pedido.status === STATUS_PEDIDO.PENDENTE && 
            pedido.statusPagamento === STATUS_PAGAMENTO.PENDENTE;
   },
 
-  /**
-   * Verifica se pedido pode ser avaliado
-   */
   podeAvaliar: (pedido) => {
     return pedido.status === STATUS_PEDIDO.ENTREGUE && !pedido.feedback;
   },
 
-  /**
-   * Obtém próximo status possível para empresa
-   */
   obterProximosStatus: (statusAtual) => {
     const fluxo = {
       [STATUS_PEDIDO.PENDENTE]: [STATUS_PEDIDO.CONFIRMADO, STATUS_PEDIDO.CANCELADO],
@@ -457,9 +377,6 @@ export const pedidoHelpers = {
     return fluxo[statusAtual] || [];
   },
 
-  /**
-   * Calcula tempo estimado de entrega
-   */
   calcularTempoEstimado: (status) => {
     const tempos = {
       [STATUS_PEDIDO.PENDENTE]: '5-10 min',
@@ -472,17 +389,11 @@ export const pedidoHelpers = {
     return tempos[status] || 'Não disponível';
   },
 
-  /**
-   * Filtra pedidos por status
-   */
   filtrarPorStatus: (pedidos, status) => {
     if (!status || status === 'todos') return pedidos;
     return pedidos.filter(pedido => pedido.status === status);
   },
 
-  /**
-   * Filtra pedidos por período
-   */
   filtrarPorPeriodo: (pedidos, dataInicio, dataFim) => {
     if (!dataInicio && !dataFim) return pedidos;
     
@@ -496,9 +407,6 @@ export const pedidoHelpers = {
     });
   },
 
-  /**
-   * Ordena pedidos
-   */
   ordenarPedidos: (pedidos, criterio = 'data', direcao = 'desc') => {
     return [...pedidos].sort((a, b) => {
       let valorA, valorB;
@@ -530,9 +438,6 @@ export const pedidoHelpers = {
     });
   },
 
-  /**
-   * Agrupa pedidos por status
-   */
   agruparPorStatus: (pedidos) => {
     return pedidos.reduce((grupos, pedido) => {
       const status = pedido.status;
@@ -544,9 +449,6 @@ export const pedidoHelpers = {
     }, {});
   },
 
-  /**
-   * Calcula estatísticas básicas
-   */
   calcularEstatisticas: (pedidos) => {
     const total = pedidos.length;
     const totalValor = pedidos.reduce((sum, pedido) => sum + pedido.total, 0);
@@ -565,9 +467,6 @@ export const pedidoHelpers = {
     };
   },
 
-  /**
-   * Formata data do pedido
-   */
   formatarData: (data) => {
     return new Intl.DateTimeFormat('pt-BR', {
       day: '2-digit',
@@ -578,9 +477,6 @@ export const pedidoHelpers = {
     }).format(new Date(data));
   },
 
-  /**
-   * Calcula tempo decorrido desde o pedido
-   */
   calcularTempoDecorrido: (dataPedido) => {
     const agora = new Date();
     const pedido = new Date(dataPedido);
@@ -598,9 +494,6 @@ export const pedidoHelpers = {
     }
   },
 
-  /**
-   * Valida dados do pedido antes do envio
-   */
   validarPedido: (dadosPedido) => {
     const erros = {};
 
@@ -620,7 +513,6 @@ export const pedidoHelpers = {
       erros.itens = 'Pedido deve ter pelo menos um item';
     }
 
-    // Validar itens individualmente
     if (dadosPedido.itens) {
       dadosPedido.itens.forEach((item, index) => {
         if (!item.produtoId) {
@@ -641,9 +533,6 @@ export const pedidoHelpers = {
     };
   },
 
-  /**
-   * Gera resumo do pedido para exibição
-   */
   gerarResumo: (pedido) => {
     const totalItens = pedido.itens?.length || 0;
     const quantidadeTotal = pedido.itens?.reduce((sum, item) => sum + item.quantidade, 0) || 0;
@@ -664,9 +553,6 @@ export const pedidoHelpers = {
     };
   },
 
-  /**
-   * Obtém ícone do status do pedido
-   */
   obterIconeStatus: (status) => {
     const icones = {
       [STATUS_PEDIDO.PENDENTE]: '⏱️',
@@ -679,9 +565,6 @@ export const pedidoHelpers = {
     return icones[status] || '📋';
   },
 
-  /**
-   * Obtém progresso do pedido (0-100)
-   */
   obterProgresso: (status) => {
     const progressos = {
       [STATUS_PEDIDO.PENDENTE]: 10,
@@ -695,9 +578,6 @@ export const pedidoHelpers = {
   }
 };
 
-/**
- * Constantes para pedidos
- */
 export const PEDIDO_CONSTANTS = {
   STATUS_OPTIONS: [
     { value: 'todos', label: 'Todos os status' },

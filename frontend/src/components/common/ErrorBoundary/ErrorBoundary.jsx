@@ -1,9 +1,6 @@
 import React from 'react';
 import './ErrorBoundary.css';
 
-/**
- * Error Boundary para capturar e tratar erros da aplicação
- */
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +13,6 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
-    // Atualiza o state para mostrar a UI de erro
     return {
       hasError: true,
       errorId: Date.now().toString(36) + Math.random().toString(36).substr(2)
@@ -24,22 +20,17 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    // Captura detalhes do erro
     this.setState({
       error,
       errorInfo
     });
 
-    // Log do erro
     console.error('ErrorBoundary capturou um erro:', error, errorInfo);
 
-    // Aqui você pode integrar com serviços de monitoramento
-    // como Sentry, LogRocket, etc.
     this.logErrorToService(error, errorInfo);
   }
 
   logErrorToService = (error, errorInfo) => {
-    // Simular envio para serviço de monitoramento
     const errorData = {
       message: error.message,
       stack: error.stack,
@@ -51,17 +42,13 @@ class ErrorBoundary extends React.Component {
       errorId: this.state.errorId
     };
 
-    // Em produção, você enviaria para um serviço real
     if (process.env.NODE_ENV === 'development') {
       console.log('Dados do erro para monitoramento:', errorData);
     }
 
-    // Exemplo de integração com serviço de monitoramento:
-    // Sentry.captureException(error, { extra: errorData });
   };
 
   getUserId = () => {
-    // Tentar obter ID do usuário do localStorage
     try {
       const user = JSON.parse(localStorage.getItem('delivery_user') || '{}');
       return user.id || 'anonymous';
@@ -85,8 +72,7 @@ class ErrorBoundary extends React.Component {
 
   handleReportError = () => {
     const { error, errorInfo, errorId } = this.state;
-    
-    // Preparar dados para relatório
+
     const reportData = {
       errorId,
       message: error?.message || 'Erro desconhecido',
@@ -95,7 +81,6 @@ class ErrorBoundary extends React.Component {
       url: window.location.href
     };
 
-    // Copiar para clipboard ou abrir email
     const reportText = `
 Relatório de Erro - ID: ${errorId}
 
@@ -107,7 +92,6 @@ Navegador: ${reportData.userAgent}
 Por favor, envie este relatório para suporte@deliveryapp.com
     `.trim();
 
-    // Tentar copiar para clipboard
     if (navigator.clipboard) {
       navigator.clipboard.writeText(reportText).then(() => {
         alert('Relatório de erro copiado para a área de transferência!');
@@ -205,27 +189,16 @@ Por favor, envie este relatório para suporte@deliveryapp.com
   }
 }
 
-/**
- * Hook para capturar erros em componentes funcionais
- */
 export const useErrorHandler = () => {
   return React.useCallback((error, errorInfo = {}) => {
-    // Log do erro
     console.error('Erro capturado pelo hook:', error);
 
-    // Em produção, enviar para serviço de monitoramento
     if (process.env.NODE_ENV === 'production') {
-      // Sentry.captureException(error, { extra: errorInfo });
     }
 
-    // Você pode implementar lógica adicional aqui
-    // como mostrar notificações, redirecionar, etc.
   }, []);
 };
 
-/**
- * Componente de erro personalizado para casos específicos
- */
 export const ErrorDisplay = ({ 
   error, 
   onRetry, 
@@ -264,9 +237,6 @@ export const ErrorDisplay = ({
   );
 };
 
-/**
- * HOC para adicionar error boundary a componentes
- */
 export const withErrorBoundary = (Component, errorComponent = null) => {
   return function WrappedComponent(props) {
     return (

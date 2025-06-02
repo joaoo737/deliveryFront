@@ -1,4 +1,4 @@
-/* Estilos principais da aplicação */
+
 .App {
   min-height: 100vh;
   background-color: var(--bg-primary);
@@ -7,7 +7,6 @@
   line-height: var(--line-height-normal);
 }
 
-/* Animações globais */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -89,7 +88,6 @@
   }
 }
 
-/* Classes de animação */
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-out;
 }
@@ -118,7 +116,6 @@
   animation: bounce 1s ease-out;
 }
 
-/* Estados de hover e focus globais */
 .hover-scale {
   transition: transform var(--transition-normal);
 }
@@ -144,16 +141,14 @@
   box-shadow: 0 0 20px rgba(255, 70, 33, 0.3);
 }
 
-/* Focus styles para acessibilidade */
 .focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
 
-/* Componentes de interface comuns */
 .page-container {
   min-height: 100vh;
-  padding-top: 80px; /* Espaço para header fixo */
+  padding-top: 80px;
 }
 
 .page-content {
@@ -185,7 +180,6 @@
   margin: 0 auto;
 }
 
-/* Grid layouts responsivos */
 .grid-auto-fit {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -198,7 +192,6 @@
   gap: var(--spacing-lg);
 }
 
-/* Estados de erro e sucesso */
 .error-state {
   text-align: center;
   padding: var(--spacing-2xl);
@@ -223,7 +216,6 @@
   opacity: 0.5;
 }
 
-/* Melhorias de acessibilidade */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -232,7 +224,6 @@
   }
 }
 
-/* High contrast mode */
 @media (prefers-contrast: high) {
   .App {
     --border-color: #ffffff;
@@ -240,7 +231,6 @@
   }
 }
 
-/* Forced colors (Windows high contrast) */
 @media (forced-colors: active) {
   .App {
     --primary-color: ButtonText;
@@ -266,7 +256,6 @@
   }
 }
 
-/* Responsividade mobile-first */
 @media (max-width: 768px) {
   .page-content {
     padding: var(--spacing-lg) var(--spacing-md);
@@ -305,7 +294,6 @@
   }
 }
 
-/* Estados de loading para elementos específicos */
 .loading-overlay-local {
   position: relative;
 }
@@ -337,7 +325,6 @@
   z-index: 2;
 }
 
-/* Scrollbar personalizada para WebKit */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -357,13 +344,11 @@
   background: var(--primary-hover);
 }
 
-/* Scrollbar para Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--primary-color) var(--bg-secondary);
 }
 
-/* Seleção de texto personalizada */
 ::selection {
   background-color: var(--primary-color);
   color: var(--text-primary);

@@ -2,7 +2,6 @@ import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { authApi } from '../services/api/authApi';
 import { authStorage, userStorage } from '../services/storage';
 
-// Estados do contexto de autenticação
 const AUTH_ACTIONS = {
   LOADING: 'LOADING',
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
@@ -14,7 +13,6 @@ const AUTH_ACTIONS = {
   CLEAR_ERROR: 'CLEAR_ERROR'
 };
 
-// Estado inicial
 const initialState = {
   user: null,
   token: null,
@@ -23,7 +21,6 @@ const initialState = {
   error: null
 };
 
-// Reducer para gerenciar estado de autenticação
 const authReducer = (state, action) => {
   switch (action.type) {
     case AUTH_ACTIONS.LOADING:
@@ -97,19 +94,15 @@ const authReducer = (state, action) => {
   }
 };
 
-// Criar contexto
 const AuthContext = createContext();
 
-// Provider do contexto de autenticação
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Verificar autenticação ao carregar
   useEffect(() => {
     checkAuthStatus();
   }, []);
 
-  // Verificar status de autenticação
   const checkAuthStatus = async () => {
     try {
       dispatch({ type: AUTH_ACTIONS.LOADING });
@@ -118,7 +111,6 @@ export const AuthProvider = ({ children }) => {
       const user = userStorage.getUser();
 
       if (token && user) {
-        // Validar token com o servidor
         try {
           const response = await authApi.validateToken();
           dispatch({
@@ -129,7 +121,6 @@ export const AuthProvider = ({ children }) => {
             }
           });
         } catch (error) {
-          // Token inválido, limpar dados
           await logout();
         }
       } else {
@@ -141,14 +132,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Fazer login
   const login = async (credentials) => {
     try {
       dispatch({ type: AUTH_ACTIONS.LOADING });
 
       const response = await authApi.login(credentials);
-      
-      // Salvar dados no storage
+
       authStorage.setToken(response.token);
       userStorage.setUser({
         id: response.userId,
@@ -180,14 +169,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Fazer registro
   const register = async (userData) => {
     try {
       dispatch({ type: AUTH_ACTIONS.LOADING });
 
       const response = await authApi.register(userData);
-      
-      // Salvar dados no storage
+
       authStorage.setToken(response.token);
       userStorage.setUser({
         id: response.userId,
@@ -219,25 +206,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Fazer logout
   const logout = async () => {
     try {
-      // Limpar storage
       authStorage.removeToken();
       userStorage.removeUser();
 
       dispatch({ type: AUTH_ACTIONS.LOGOUT });
     } catch (error) {
       console.error('Erro ao fazer logout:', error);
-      // Mesmo com erro, limpar estado local
       dispatch({ type: AUTH_ACTIONS.LOGOUT });
     }
   };
 
-  // Atualizar dados do usuário
   const updateUser = async (updates) => {
     try {
-      // Atualizar no storage
       userStorage.updateUser(updates);
 
       dispatch({
@@ -250,7 +232,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Obter dados atuais do usuário
   const refreshUser = async () => {
     try {
       const response = await authApi.getCurrentUser();
@@ -278,12 +259,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Limpar erro
   const clearError = () => {
     dispatch({ type: AUTH_ACTIONS.CLEAR_ERROR });
   };
 
-  // Verificar se usuário tem permissão
   const hasPermission = (requiredRole) => {
     if (!state.user) return false;
     
@@ -299,21 +278,17 @@ export const AuthProvider = ({ children }) => {
     return userLevel >= requiredLevel;
   };
 
-  // Verificar tipo de usuário
   const isCliente = () => state.user?.tipoUsuario === 'CLIENTE';
   const isEmpresa = () => state.user?.tipoUsuario === 'EMPRESA';
   const isAdmin = () => state.user?.tipoUsuario === 'ADMIN';
 
-  // Valor do contexto
   const value = {
-    // Estado
     user: state.user,
     token: state.token,
     isAuthenticated: state.isAuthenticated,
     isLoading: state.isLoading,
     error: state.error,
 
-    // Ações
     login,
     register,
     logout,
@@ -322,7 +297,6 @@ export const AuthProvider = ({ children }) => {
     clearError,
     checkAuthStatus,
 
-    // Helpers
     hasPermission,
     isCliente,
     isEmpresa,
@@ -336,7 +310,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Hook para usar o contexto de autenticação
 export const useAuth = () => {
   const context = useContext(AuthContext);
   
@@ -347,7 +320,6 @@ export const useAuth = () => {
   return context;
 };
 
-// HOC para proteger rotas
 export const withAuth = (Component, requiredRole = null) => {
   return function AuthenticatedComponent(props) {
     const { isAuthenticated, isLoading, hasPermission } = useAuth();
@@ -361,7 +333,6 @@ export const withAuth = (Component, requiredRole = null) => {
     }
 
     if (!isAuthenticated) {
-      // Redirecionar para login
       window.location.href = '/login';
       return null;
     }

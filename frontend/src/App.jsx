@@ -6,9 +6,6 @@ import AppRoutes from './routes/AppRoutes';
 import ErrorBoundary from './components/common/ErrorBoundary/ErrorBoundary';
 import './App.css';
 
-/**
- * Componente principal da aplicação
- */
 function App() {
   return (
     <ErrorBoundary>

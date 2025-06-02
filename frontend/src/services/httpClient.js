@@ -2,7 +2,6 @@ import axios from 'axios';
 import { API_BASE_URL, STORAGE_KEYS, ERROR_MESSAGES } from '../utils/constants';
 import { loadFromStorage, removeFromStorage } from '../utils/helpers';
 
-// Criar instância do axios
 const httpClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: 30000,
@@ -11,7 +10,6 @@ const httpClient = axios.create({
   },
 });
 
-// Interceptor para requisições - adiciona token de autenticação
 httpClient.interceptors.request.use(
   (config) => {
     const token = loadFromStorage(STORAGE_KEYS.TOKEN);
@@ -19,8 +17,7 @@ httpClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
-    // Log da requisição em desenvolvimento
+
     if (process.env.NODE_ENV === 'development') {
       console.log('🚀 Request:', {
         method: config.method?.toUpperCase(),
@@ -38,10 +35,8 @@ httpClient.interceptors.request.use(
   }
 );
 
-// Interceptor para respostas - trata erros globalmente
 httpClient.interceptors.response.use(
   (response) => {
-    // Log da resposta em desenvolvimento
     if (process.env.NODE_ENV === 'development') {
       console.log('✅ Response:', {
         status: response.status,
@@ -54,23 +49,19 @@ httpClient.interceptors.response.use(
   },
   (error) => {
     const { response, request, message } = error;
-    
-    // Log do erro
+
     console.error('❌ Response Error:', {
       status: response?.status,
       url: error.config?.url,
       message: error.message,
       data: response?.data
     });
-    
-    // Trata diferentes tipos de erro
+
     if (response) {
-      // Erro de resposta do servidor
       const { status, data } = response;
       
       switch (status) {
         case 401:
-          // Token inválido ou expirado
           handleUnauthorized();
           return Promise.reject({
             ...error,
@@ -113,13 +104,11 @@ httpClient.interceptors.response.use(
           });
       }
     } else if (request) {
-      // Erro de rede
       return Promise.reject({
         ...error,
         message: ERROR_MESSAGES.NETWORK_ERROR
       });
     } else {
-      // Erro de configuração
       return Promise.reject({
         ...error,
         message: message || ERROR_MESSAGES.GENERIC_ERROR
@@ -128,21 +117,16 @@ httpClient.interceptors.response.use(
   }
 );
 
-// Função para lidar com não autorizado
 const handleUnauthorized = () => {
-  // Remove dados de autenticação
   removeFromStorage(STORAGE_KEYS.TOKEN);
   removeFromStorage(STORAGE_KEYS.USER);
-  
-  // Redireciona para login se não estiver na página de login
+
   if (!window.location.pathname.includes('/login')) {
     window.location.href = '/login';
   }
 };
 
-// Métodos HTTP customizados
 export const api = {
-  // GET
   get: async (url, params = {}, config = {}) => {
     try {
       const response = await httpClient.get(url, {
@@ -154,8 +138,7 @@ export const api = {
       throw error;
     }
   },
-  
-  // POST
+
   post: async (url, data = {}, config = {}) => {
     try {
       const response = await httpClient.post(url, data, config);
@@ -164,8 +147,7 @@ export const api = {
       throw error;
     }
   },
-  
-  // PUT
+
   put: async (url, data = {}, config = {}) => {
     try {
       const response = await httpClient.put(url, data, config);
@@ -174,8 +156,7 @@ export const api = {
       throw error;
     }
   },
-  
-  // PATCH
+
   patch: async (url, data = {}, config = {}) => {
     try {
       const response = await httpClient.patch(url, data, config);
@@ -184,8 +165,7 @@ export const api = {
       throw error;
     }
   },
-  
-  // DELETE
+
   delete: async (url, config = {}) => {
     try {
       const response = await httpClient.delete(url, config);
@@ -194,8 +174,7 @@ export const api = {
       throw error;
     }
   },
-  
-  // Upload de arquivo
+
   upload: async (url, file, onProgress = null, config = {}) => {
     const formData = new FormData();
     formData.append('file', file);
@@ -220,16 +199,14 @@ export const api = {
       throw error;
     }
   },
-  
-  // Download de arquivo
+
   download: async (url, filename, config = {}) => {
     try {
       const response = await httpClient.get(url, {
         responseType: 'blob',
         ...config
       });
-      
-      // Criar link para download
+
       const blob = new Blob([response.data]);
       const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -247,7 +224,6 @@ export const api = {
   }
 };
 
-// Wrapper para requisições com loading
 export const apiWithLoading = {
   get: (url, params, config, setLoading) => withLoading(() => api.get(url, params, config), setLoading),
   post: (url, data, config, setLoading) => withLoading(() => api.post(url, data, config), setLoading),
@@ -257,7 +233,6 @@ export const apiWithLoading = {
   upload: (url, file, onProgress, config, setLoading) => withLoading(() => api.upload(url, file, onProgress, config), setLoading),
 };
 
-// Função helper para controlar loading
 const withLoading = async (apiCall, setLoading) => {
   if (setLoading) setLoading(true);
   try {
@@ -268,7 +243,6 @@ const withLoading = async (apiCall, setLoading) => {
   }
 };
 
-// Cancelamento de requisições
 export const createCancelToken = () => {
   return axios.CancelToken.source();
 };
@@ -277,27 +251,22 @@ export const isCancel = (error) => {
   return axios.isCancel(error);
 };
 
-// Configuração de timeout personalizado
 export const setRequestTimeout = (timeout) => {
   httpClient.defaults.timeout = timeout;
 };
 
-// Função para definir base URL dinamicamente
 export const setBaseURL = (url) => {
   httpClient.defaults.baseURL = url;
 };
 
-// Função para adicionar headers customizados
 export const setDefaultHeaders = (headers) => {
   Object.assign(httpClient.defaults.headers, headers);
 };
 
-// Função para remover header
 export const removeDefaultHeader = (headerName) => {
   delete httpClient.defaults.headers[headerName];
 };
 
-// Retry automático para requisições falhadas
 export const apiWithRetry = {
   get: (url, params, config, retries = 3) => withRetry(() => api.get(url, params, config), retries),
   post: (url, data, config, retries = 3) => withRetry(() => api.post(url, data, config), retries),
@@ -306,7 +275,6 @@ export const apiWithRetry = {
   delete: (url, config, retries = 3) => withRetry(() => api.delete(url, config), retries),
 };
 
-// Função helper para retry
 const withRetry = async (apiCall, retries, delay = 1000) => {
   let lastError;
   
@@ -315,13 +283,11 @@ const withRetry = async (apiCall, retries, delay = 1000) => {
       return await apiCall();
     } catch (error) {
       lastError = error;
-      
-      // Não fazer retry para erros de cliente (4xx)
+
       if (error.response && error.response.status >= 400 && error.response.status < 500) {
         throw error;
       }
-      
-      // Aguardar antes do próximo retry
+
       if (i < retries) {
         await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, i)));
       }
@@ -331,7 +297,6 @@ const withRetry = async (apiCall, retries, delay = 1000) => {
   throw lastError;
 };
 
-// Função para verificar se está online
 export const checkOnlineStatus = async () => {
   try {
     await api.get('/health');
@@ -341,7 +306,6 @@ export const checkOnlineStatus = async () => {
   }
 };
 
-// Rate limiting
 const requestQueue = [];
 const maxConcurrentRequests = 10;
 let activeRequests = 0;

@@ -1,17 +1,10 @@
 import { VALIDATION } from './constants';
-
-/**
- * Valida email
- */
 export const validateEmail = (email) => {
   if (!email) return 'Email é obrigatório';
   if (!VALIDATION.EMAIL_REGEX.test(email)) return 'Email inválido';
   return null;
 };
 
-/**
- * Valida senha
- */
 export const validatePassword = (password) => {
   if (!password) return 'Senha é obrigatória';
   if (password.length < VALIDATION.MIN_PASSWORD_LENGTH) {
@@ -20,18 +13,12 @@ export const validatePassword = (password) => {
   return null;
 };
 
-/**
- * Valida confirmação de senha
- */
 export const validatePasswordConfirmation = (password, confirmation) => {
   if (!confirmation) return 'Confirmação de senha é obrigatória';
   if (password !== confirmation) return 'Senhas não coincidem';
   return null;
 };
 
-/**
- * Valida nome
- */
 export const validateName = (name) => {
   if (!name || !name.trim()) return 'Nome é obrigatório';
   if (name.trim().length < VALIDATION.MIN_NAME_LENGTH) {
@@ -43,53 +30,36 @@ export const validateName = (name) => {
   return null;
 };
 
-/**
- * Valida CPF
- */
 export const validateCPF = (cpf) => {
   if (!cpf) return 'CPF é obrigatório';
-  
-  // Remove formatação
+
   const cleanCPF = cpf.replace(/[^\d]/g, '');
   
   if (!VALIDATION.CPF_REGEX.test(cleanCPF)) return 'CPF deve ter 11 dígitos';
-  
-  // Verifica se não são todos os dígitos iguais
+
   if (/^(\d)\1{10}$/.test(cleanCPF)) return 'CPF inválido';
-  
-  // Valida dígitos verificadores
+
   if (!isValidCPF(cleanCPF)) return 'CPF inválido';
   
   return null;
 };
 
-/**
- * Valida CNPJ
- */
 export const validateCNPJ = (cnpj) => {
   if (!cnpj) return 'CNPJ é obrigatório';
-  
-  // Remove formatação
+
   const cleanCNPJ = cnpj.replace(/[^\d]/g, '');
   
   if (!VALIDATION.CNPJ_REGEX.test(cleanCNPJ)) return 'CNPJ deve ter 14 dígitos';
-  
-  // Verifica se não são todos os dígitos iguais
+
   if (/^(\d)\1{13}$/.test(cleanCNPJ)) return 'CNPJ inválido';
-  
-  // Valida dígitos verificadores
+
   if (!isValidCNPJ(cleanCNPJ)) return 'CNPJ inválido';
   
   return null;
 };
 
-/**
- * Valida telefone
- */
 export const validatePhone = (phone) => {
   if (!phone) return 'Telefone é obrigatório';
-  
-  // Remove formatação
   const cleanPhone = phone.replace(/[^\d]/g, '');
   
   if (!VALIDATION.TELEFONE_REGEX.test(cleanPhone)) {
@@ -99,18 +69,12 @@ export const validatePhone = (phone) => {
   return null;
 };
 
-/**
- * Valida endereço
- */
 export const validateAddress = (address) => {
   if (!address || !address.trim()) return 'Endereço é obrigatório';
   if (address.trim().length < 10) return 'Endereço muito curto';
   return null;
 };
 
-/**
- * Valida preço
- */
 export const validatePrice = (price) => {
   if (price === null || price === undefined || price === '') {
     return 'Preço é obrigatório';
@@ -125,9 +89,6 @@ export const validatePrice = (price) => {
   return null;
 };
 
-/**
- * Valida quantidade
- */
 export const validateQuantity = (quantity) => {
   if (quantity === null || quantity === undefined || quantity === '') {
     return 'Quantidade é obrigatória';
@@ -143,9 +104,6 @@ export const validateQuantity = (quantity) => {
   return null;
 };
 
-/**
- * Valida estoque
- */
 export const validateStock = (stock) => {
   if (stock === null || stock === undefined || stock === '') {
     return 'Estoque é obrigatório';
@@ -161,9 +119,6 @@ export const validateStock = (stock) => {
   return null;
 };
 
-/**
- * Valida nota de avaliação
- */
 export const validateRating = (rating) => {
   if (rating === null || rating === undefined || rating === '') {
     return 'Nota é obrigatória';
@@ -179,9 +134,6 @@ export const validateRating = (rating) => {
   return null;
 };
 
-/**
- * Valida coordenadas de latitude
- */
 export const validateLatitude = (latitude) => {
   if (latitude === null || latitude === undefined || latitude === '') {
     return 'Latitude é obrigatória';
@@ -195,9 +147,6 @@ export const validateLatitude = (latitude) => {
   return null;
 };
 
-/**
- * Valida coordenadas de longitude
- */
 export const validateLongitude = (longitude) => {
   if (longitude === null || longitude === undefined || longitude === '') {
     return 'Longitude é obrigatória';
@@ -211,9 +160,6 @@ export const validateLongitude = (longitude) => {
   return null;
 };
 
-/**
- * Valida descrição
- */
 export const validateDescription = (description, required = false) => {
   if (required && (!description || !description.trim())) {
     return 'Descrição é obrigatória';
@@ -226,9 +172,6 @@ export const validateDescription = (description, required = false) => {
   return null;
 };
 
-/**
- * Valida comentário
- */
 export const validateComment = (comment, required = false) => {
   if (required && (!comment || !comment.trim())) {
     return 'Comentário é obrigatório';
@@ -241,9 +184,6 @@ export const validateComment = (comment, required = false) => {
   return null;
 };
 
-/**
- * Valida arquivo de imagem
- */
 export const validateImageFile = (file) => {
   if (!file) return 'Arquivo é obrigatório';
   
@@ -258,9 +198,6 @@ export const validateImageFile = (file) => {
   return null;
 };
 
-/**
- * Valida um formulário completo
- */
 export const validateForm = (data, rules) => {
   const errors = {};
   
@@ -288,52 +225,42 @@ export const validateForm = (data, rules) => {
   };
 };
 
-// Funções auxiliares para validação de CPF e CNPJ
-
 function isValidCPF(cpf) {
-  // Cálculo do primeiro dígito verificador
   let sum = 0;
   for (let i = 0; i < 9; i++) {
     sum += parseInt(cpf.charAt(i)) * (10 - i);
   }
   let digit1 = 11 - (sum % 11);
   if (digit1 >= 10) digit1 = 0;
-  
-  // Cálculo do segundo dígito verificador
+
   sum = 0;
   for (let i = 0; i < 10; i++) {
     sum += parseInt(cpf.charAt(i)) * (11 - i);
   }
   let digit2 = 11 - (sum % 11);
   if (digit2 >= 10) digit2 = 0;
-  
-  // Verificação dos dígitos
+
   return parseInt(cpf.charAt(9)) === digit1 && parseInt(cpf.charAt(10)) === digit2;
 }
 
 function isValidCNPJ(cnpj) {
-  // Pesos para o primeiro dígito
   const weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-  
-  // Cálculo do primeiro dígito verificador
+
   let sum1 = 0;
   for (let i = 0; i < 12; i++) {
     sum1 += parseInt(cnpj.charAt(i)) * weights1[i];
   }
   let digit1 = 11 - (sum1 % 11);
   if (digit1 >= 10) digit1 = 0;
-  
-  // Pesos para o segundo dígito
+
   const weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-  
-  // Cálculo do segundo dígito verificador
+
   let sum2 = 0;
   for (let i = 0; i < 13; i++) {
     sum2 += parseInt(cnpj.charAt(i)) * weights2[i];
   }
   let digit2 = 11 - (sum2 % 11);
   if (digit2 >= 10) digit2 = 0;
-  
-  // Verificação dos dígitos
+
   return parseInt(cnpj.charAt(12)) === digit1 && parseInt(cnpj.charAt(13)) === digit2;
 }

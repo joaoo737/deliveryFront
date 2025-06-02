@@ -1,13 +1,8 @@
 import { api } from '../httpClient';
 import { API_ENDPOINTS } from '../../utils/constants';
 
-/**
- * API de empresa
- */
 export const empresaApi = {
-  /**
-   * Obtém perfil da empresa
-   */
+
   getPerfil: async () => {
     try {
       const response = await api.get(API_ENDPOINTS.EMPRESA.PERFIL);
@@ -17,9 +12,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Obtém relatório da empresa
-   */
   getRelatorio: async (params = {}) => {
     try {
       const response = await api.get(API_ENDPOINTS.EMPRESA.RELATORIOS, params);
@@ -29,9 +21,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Lista pedidos da empresa
-   */
   getPedidos: async (params = {}) => {
     try {
       const response = await api.get(API_ENDPOINTS.EMPRESA.PEDIDOS, params);
@@ -41,9 +30,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Atualiza status do pedido
-   */
   atualizarStatusPedido: async (pedidoId, status) => {
     try {
       const response = await api.patch(
@@ -57,9 +43,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Lista produtos da empresa
-   */
   getProdutos: async (params = {}) => {
     try {
       const response = await api.get(API_ENDPOINTS.EMPRESA.PRODUTOS, params);
@@ -69,9 +52,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Lista produtos paginados
-   */
   getProdutosPaginado: async (params = {}) => {
     try {
       const response = await api.get(`${API_ENDPOINTS.EMPRESA.PRODUTOS}/paginado`, params);
@@ -81,9 +61,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Busca produto por ID
-   */
   getProduto: async (produtoId) => {
     try {
       const response = await api.get(`${API_ENDPOINTS.EMPRESA.PRODUTOS}/${produtoId}`);
@@ -93,9 +70,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Cria novo produto
-   */
   criarProduto: async (dadosProduto) => {
     try {
       const response = await api.post(API_ENDPOINTS.EMPRESA.PRODUTOS, dadosProduto);
@@ -105,9 +79,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Atualiza produto
-   */
   atualizarProduto: async (produtoId, dadosProduto) => {
     try {
       const response = await api.put(
@@ -120,9 +91,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Remove produto
-   */
   deletarProduto: async (produtoId) => {
     try {
       const response = await api.delete(`${API_ENDPOINTS.EMPRESA.PRODUTOS}/${produtoId}`);
@@ -132,9 +100,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Ativa produto
-   */
   ativarProduto: async (produtoId) => {
     try {
       const response = await api.patch(`${API_ENDPOINTS.EMPRESA.PRODUTOS}/${produtoId}/ativar`);
@@ -144,9 +109,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Desativa produto
-   */
   desativarProduto: async (produtoId) => {
     try {
       const response = await api.patch(`${API_ENDPOINTS.EMPRESA.PRODUTOS}/${produtoId}/desativar`);
@@ -156,9 +118,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Atualiza estoque do produto
-   */
   atualizarEstoque: async (produtoId, novoEstoque) => {
     try {
       const response = await api.patch(
@@ -171,9 +130,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Obtém estatísticas dos produtos
-   */
   getEstatisticasProdutos: async () => {
     try {
       const response = await api.get(`${API_ENDPOINTS.EMPRESA.PRODUTOS}/estatisticas`);
@@ -183,9 +139,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Lista produtos com baixo estoque
-   */
   getProdutosBaixoEstoque: async (limite = 10) => {
     try {
       const response = await api.get(
@@ -198,9 +151,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Lista feedbacks da empresa
-   */
   getFeedbacks: async (params = {}) => {
     try {
       const response = await api.get(API_ENDPOINTS.EMPRESA.FEEDBACKS, params);
@@ -210,9 +160,6 @@ export const empresaApi = {
     }
   },
 
-  /**
-   * Obtém estatísticas de feedbacks
-   */
   getEstatisticasFeedbacks: async () => {
     try {
       const response = await api.get(`${API_ENDPOINTS.EMPRESA.FEEDBACKS}/estatisticas`);
@@ -222,11 +169,7 @@ export const empresaApi = {
     }
   },
 
-  // Relatórios específicos
   relatorios: {
-    /**
-     * Relatório mensal
-     */
     getMensal: async (mes, ano) => {
       try {
         const response = await api.get(`${API_ENDPOINTS.EMPRESA.RELATORIOS}/mensal`, { mes, ano });
@@ -236,9 +179,6 @@ export const empresaApi = {
       }
     },
 
-    /**
-     * Relatório anual
-     */
     getAnual: async (ano) => {
       try {
         const response = await api.get(`${API_ENDPOINTS.EMPRESA.RELATORIOS}/anual`, { ano });
@@ -248,9 +188,6 @@ export const empresaApi = {
       }
     },
 
-    /**
-     * Relatório por período
-     */
     getPorPeriodo: async (dataInicio, dataFim) => {
       try {
         const response = await api.get(`${API_ENDPOINTS.EMPRESA.RELATORIOS}/periodo`, {
@@ -263,9 +200,6 @@ export const empresaApi = {
       }
     },
 
-    /**
-     * Relatório de vendas
-     */
     getVendas: async (mes, ano) => {
       try {
         const response = await api.get(`${API_ENDPOINTS.EMPRESA.RELATORIOS}/vendas`, { mes, ano });
@@ -275,9 +209,6 @@ export const empresaApi = {
       }
     },
 
-    /**
-     * Produtos mais vendidos
-     */
     getProdutosMaisVendidos: async (mes, ano, limite = 10) => {
       try {
         const response = await api.get(
@@ -290,9 +221,6 @@ export const empresaApi = {
       }
     },
 
-    /**
-     * Clientes frequentes
-     */
     getClientesFrequentes: async (mes, ano, limite = 10) => {
       try {
         const response = await api.get(
@@ -305,9 +233,6 @@ export const empresaApi = {
       }
     },
 
-    /**
-     * Dashboard
-     */
     getDashboard: async () => {
       try {
         const response = await api.get(`${API_ENDPOINTS.EMPRESA.RELATORIOS}/dashboard`);
@@ -317,9 +242,6 @@ export const empresaApi = {
       }
     },
 
-    /**
-     * Relatório comparativo
-     */
     getComparativo: async (mesAtual, anoAtual) => {
       try {
         const response = await api.get(`${API_ENDPOINTS.EMPRESA.RELATORIOS}/comparativo`, {
@@ -332,9 +254,6 @@ export const empresaApi = {
       }
     },
 
-    /**
-     * Exportar relatório PDF
-     */
     exportarPDF: async (mes, ano) => {
       try {
         const response = await api.download(
@@ -350,13 +269,7 @@ export const empresaApi = {
   }
 };
 
-/**
- * Helpers para empresa
- */
 export const empresaHelpers = {
-  /**
-   * Formata dados do produto para envio
-   */
   formatarProdutoParaEnvio: (dados) => {
     return {
       nome: dados.nome?.trim(),
@@ -371,9 +284,6 @@ export const empresaHelpers = {
     };
   },
 
-  /**
-   * Calcula estatísticas de produtos
-   */
   calcularEstatisticasProdutos: (produtos) => {
     const total = produtos.length;
     const ativos = produtos.filter(p => p.ativo).length;
@@ -391,9 +301,6 @@ export const empresaHelpers = {
     };
   },
 
-  /**
-   * Formata valor monetário para relatórios
-   */
   formatarValorRelatorio: (valor) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
@@ -401,17 +308,11 @@ export const empresaHelpers = {
     }).format(valor || 0);
   },
 
-  /**
-   * Calcula variação percentual
-   */
   calcularVariacaoPercentual: (valorAtual, valorAnterior) => {
     if (!valorAnterior || valorAnterior === 0) return 0;
     return ((valorAtual - valorAnterior) / valorAnterior) * 100;
   },
 
-  /**
-   * Gera cores para gráficos
-   */
   gerarCoresGrafico: (quantidade) => {
     const cores = [
       '#FF4621', '#e63e1a', '#ff6542', '#cc3617',
@@ -424,9 +325,6 @@ export const empresaHelpers = {
     );
   },
 
-  /**
-   * Formata dados para gráfico de vendas
-   */
   formatarDadosGraficoVendas: (dados) => {
     return dados.map(item => ({
       name: item.periodo,
@@ -435,9 +333,6 @@ export const empresaHelpers = {
     }));
   },
 
-  /**
-   * Valida dados do produto
-   */
   validarProduto: (dados) => {
     const erros = {};
 
@@ -459,9 +354,6 @@ export const empresaHelpers = {
     };
   },
 
-  /**
-   * Filtra produtos por status
-   */
   filtrarProdutosPorStatus: (produtos, status) => {
     switch (status) {
       case 'ativos':

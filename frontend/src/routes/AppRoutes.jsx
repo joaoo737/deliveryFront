@@ -73,16 +73,13 @@ const AccessDenied = () => (
   </div>
 );
 
-// Componente principal de rotas
 const AppRoutes = () => {
   const { isAuthenticated, isLoading, user } = useAuth();
 
-  // Mostrar loading enquanto verifica autenticação
   if (isLoading) {
     return <Loading />;
   }
 
-  // Função para redirecionamento baseado no tipo de usuário
   const getDefaultRedirect = () => {
     if (!isAuthenticated || !user) return '/';
     

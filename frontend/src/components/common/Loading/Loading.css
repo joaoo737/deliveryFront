@@ -1,4 +1,3 @@
-/* Container principal do loading */
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -7,7 +6,6 @@
   gap: var(--spacing-md);
 }
 
-/* Tamanhos do loading */
 .loading-small {
   font-size: var(--font-size-sm);
 }
@@ -20,7 +18,6 @@
   font-size: var(--font-size-lg);
 }
 
-/* Cores do loading */
 .loading-primary .loading-spinner .spinner-ring div,
 .loading-primary .loading-dots .dot,
 .loading-primary .loading-pulse .pulse-circle,
@@ -45,14 +42,12 @@
   background-color: #ffffff;
 }
 
-/* Texto do loading */
 .loading-text {
   color: var(--text-secondary);
   font-weight: var(--font-weight-medium);
   text-align: center;
 }
 
-/* Full screen loading */
 .loading-fullscreen {
   position: fixed;
   top: 0;
@@ -66,7 +61,6 @@
   z-index: var(--z-modal);
 }
 
-/* Overlay loading */
 .loading-overlay {
   position: absolute;
   top: 0;
@@ -80,7 +74,6 @@
   z-index: var(--z-modal-backdrop);
 }
 
-/* SPINNER LOADING */
 .loading-spinner {
   position: relative;
 }
@@ -147,7 +140,6 @@
   }
 }
 
-/* DOTS LOADING */
 .loading-dots {
   display: flex;
   gap: var(--spacing-sm);
@@ -191,7 +183,6 @@
   }
 }
 
-/* PULSE LOADING */
 .loading-pulse {
   position: relative;
 }
@@ -225,7 +216,6 @@
   }
 }
 
-/* BARS LOADING */
 .loading-bars {
   display: flex;
   gap: 4px;
@@ -276,7 +266,6 @@
   }
 }
 
-/* SKELETON LOADING */
 .skeleton-card {
   background-color: var(--bg-secondary);
   border-radius: var(--radius-lg);
@@ -362,7 +351,6 @@
   }
 }
 
-/* BUTTON LOADING */
 .btn-loading {
   display: inline-flex;
   align-items: center;
@@ -427,7 +415,6 @@
   animation-delay: -0.16s;
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
   .loading-fullscreen .loading-container {
     padding: var(--spacing-lg);
@@ -476,7 +463,6 @@
   }
 }
 
-/* Estados de loading específicos */
 .loading-card {
   min-height: 200px;
   display: flex;

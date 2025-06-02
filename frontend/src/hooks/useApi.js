@@ -1,9 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { api, createCancelToken, isCancel } from '../services/httpClient';
 
-/**
- * Hook para gerenciar chamadas de API
- */
 export const useApi = (initialState = {}) => {
   const [state, setState] = useState({
     data: null,
@@ -14,7 +11,6 @@ export const useApi = (initialState = {}) => {
 
   const cancelTokenRef = useRef(null);
 
-  // Cancelar requisições pendentes ao desmontar componente
   useEffect(() => {
     return () => {
       if (cancelTokenRef.current) {
@@ -23,7 +19,6 @@ export const useApi = (initialState = {}) => {
     };
   }, []);
 
-  // Executar requisição
   const execute = useCallback(async (apiCall, options = {}) => {
     const { 
       onSuccess,
@@ -33,15 +28,12 @@ export const useApi = (initialState = {}) => {
     } = options;
 
     try {
-      // Cancelar requisição anterior se necessário
       if (cancelPrevious && cancelTokenRef.current) {
         cancelTokenRef.current.cancel('New request initiated');
       }
 
-      // Criar novo token de cancelamento
       cancelTokenRef.current = createCancelToken();
 
-      // Mostrar loading
       if (showLoading) {
         setState(prev => ({
           ...prev,
@@ -50,10 +42,8 @@ export const useApi = (initialState = {}) => {
         }));
       }
 
-      // Executar chamada da API
       const response = await apiCall(cancelTokenRef.current.token);
 
-      // Atualizar estado com sucesso
       setState(prev => ({
         ...prev,
         data: response,
@@ -61,7 +51,6 @@ export const useApi = (initialState = {}) => {
         error: null
       }));
 
-      // Callback de sucesso
       if (onSuccess) {
         onSuccess(response);
       }
@@ -69,20 +58,17 @@ export const useApi = (initialState = {}) => {
       return response;
 
     } catch (error) {
-      // Verificar se foi cancelado
       if (isCancel(error)) {
         console.log('Request cancelled:', error.message);
         return;
       }
 
-      // Atualizar estado com erro
       setState(prev => ({
         ...prev,
         loading: false,
         error: error.message || 'Erro desconhecido'
       }));
 
-      // Callback de erro
       if (onError) {
         onError(error);
       }
@@ -91,7 +77,6 @@ export const useApi = (initialState = {}) => {
     }
   }, []);
 
-  // Reset do estado
   const reset = useCallback(() => {
     setState({
       data: null,
@@ -100,7 +85,6 @@ export const useApi = (initialState = {}) => {
     });
   }, []);
 
-  // Cancelar requisição atual
   const cancel = useCallback(() => {
     if (cancelTokenRef.current) {
       cancelTokenRef.current.cancel('Request cancelled by user');
@@ -115,9 +99,6 @@ export const useApi = (initialState = {}) => {
   };
 };
 
-/**
- * Hook para GET requests
- */
 export const useGet = (url, options = {}) => {
   const { 
     immediate = false,
@@ -135,7 +116,6 @@ export const useGet = (url, options = {}) => {
     );
   }, [url, params, apiOptions, apiState]);
 
-  // Executar imediatamente se solicitado
   useEffect(() => {
     if (immediate) {
       get();
@@ -148,9 +128,6 @@ export const useGet = (url, options = {}) => {
   };
 };
 
-/**
- * Hook para POST requests
- */
 export const usePost = (url, options = {}) => {
   const apiState = useApi();
 
@@ -167,9 +144,6 @@ export const usePost = (url, options = {}) => {
   };
 };
 
-/**
- * Hook para PUT requests
- */
 export const usePut = (url, options = {}) => {
   const apiState = useApi();
 
@@ -186,9 +160,6 @@ export const usePut = (url, options = {}) => {
   };
 };
 
-/**
- * Hook para PATCH requests
- */
 export const usePatch = (url, options = {}) => {
   const apiState = useApi();
 
@@ -205,9 +176,6 @@ export const usePatch = (url, options = {}) => {
   };
 };
 
-/**
- * Hook para DELETE requests
- */
 export const useDelete = (url, options = {}) => {
   const apiState = useApi();
 
@@ -224,9 +192,6 @@ export const useDelete = (url, options = {}) => {
   };
 };
 
-/**
- * Hook para upload de arquivos
- */
 export const useUpload = (url, options = {}) => {
   const [progress, setProgress] = useState(0);
   const apiState = useApi();
@@ -252,9 +217,6 @@ export const useUpload = (url, options = {}) => {
   };
 };
 
-/**
- * Hook para múltiplas requisições paralelas
- */
 export const useParallelRequests = () => {
   const [state, setState] = useState({
     data: [],
@@ -349,9 +311,7 @@ export const useParallelRequests = () => {
   };
 };
 
-/**
- * Hook para polling (requisições periódicas)
- */
+
 export const usePolling = (apiCall, interval = 5000, options = {}) => {
   const { 
     immediate = true,

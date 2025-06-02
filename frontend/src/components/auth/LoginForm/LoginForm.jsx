@@ -24,7 +24,6 @@ const LoginForm = () => {
       [name]: value
     }));
     
-    // Limpar erro específico quando usuário começar a digitar
     if (validationErrors[name]) {
       setValidationErrors(prev => ({
         ...prev,
@@ -32,7 +31,6 @@ const LoginForm = () => {
       }));
     }
     
-    // Limpar erro geral
     if (error) {
       clearError();
     }
@@ -62,7 +60,6 @@ const LoginForm = () => {
       await login(formData);
       navigate('/');
     } catch (err) {
-      // Erro já tratado no contexto
       console.error('Erro no login:', err);
     }
   };

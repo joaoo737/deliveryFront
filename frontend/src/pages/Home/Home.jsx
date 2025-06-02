@@ -29,30 +29,25 @@ const Home = () => {
   const loadHomeData = async () => {
     try {
       setLoading(true);
-      
-      // Carregar dados em paralelo
+
       const [categoriesRes, companiesRes, productsRes] = await Promise.allSettled([
         api.get(API_ENDPOINTS.PUBLICO.CATEGORIAS),
         api.get(`${API_ENDPOINTS.PUBLICO.BUSCA}/empresas`, { size: 6 }),
         api.get(`${API_ENDPOINTS.PUBLICO.BUSCA}/produtos`, { size: 8 })
       ]);
 
-      // Categorias
       if (categoriesRes.status === 'fulfilled') {
         setCategories(categoriesRes.value.slice(0, 8));
       }
 
-      // Empresas em destaque
       if (companiesRes.status === 'fulfilled') {
         setFeaturedCompanies(companiesRes.value.content || companiesRes.value);
       }
 
-      // Produtos em destaque
       if (productsRes.status === 'fulfilled') {
         setFeaturedProducts(productsRes.value.content || productsRes.value);
       }
 
-      // Estatísticas básicas
       setStats({
         totalEmpresas: companiesRes.status === 'fulfilled' ? (companiesRes.value.totalElements || companiesRes.value.length) : 0,
         totalProdutos: productsRes.status === 'fulfilled' ? (productsRes.value.totalElements || productsRes.value.length) : 0,

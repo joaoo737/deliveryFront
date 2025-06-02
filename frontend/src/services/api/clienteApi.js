@@ -1,13 +1,8 @@
 import { api } from '../httpClient';
 import { API_ENDPOINTS } from '../../utils/constants';
 
-/**
- * API de cliente
- */
 export const clienteApi = {
-  /**
-   * Obtém perfil do cliente
-   */
+
   getPerfil: async () => {
     try {
       const response = await api.get(API_ENDPOINTS.CLIENTE.PERFIL);
@@ -17,9 +12,6 @@ export const clienteApi = {
     }
   },
 
-  /**
-   * Atualiza perfil do cliente
-   */
   updatePerfil: async (dadosCliente) => {
     try {
       const response = await api.put(API_ENDPOINTS.CLIENTE.PERFIL, dadosCliente);
@@ -29,9 +21,6 @@ export const clienteApi = {
     }
   },
 
-  /**
-   * Lista pedidos do cliente
-   */
   getPedidos: async (params = {}) => {
     try {
       const response = await api.get(API_ENDPOINTS.CLIENTE.PEDIDOS, params);
@@ -41,9 +30,6 @@ export const clienteApi = {
     }
   },
 
-  /**
-   * Busca pedido por ID
-   */
   getPedido: async (pedidoId) => {
     try {
       const response = await api.get(`${API_ENDPOINTS.CLIENTE.PEDIDOS}/${pedidoId}`);
@@ -53,9 +39,6 @@ export const clienteApi = {
     }
   },
 
-  /**
-   * Cria novo pedido
-   */
   criarPedido: async (dadosPedido) => {
     try {
       const response = await api.post(API_ENDPOINTS.CLIENTE.PEDIDOS, dadosPedido);
@@ -65,9 +48,6 @@ export const clienteApi = {
     }
   },
 
-  /**
-   * Lista pedidos por status
-   */
   getPedidosPorStatus: async (status, params = {}) => {
     try {
       const response = await api.get(
@@ -80,9 +60,6 @@ export const clienteApi = {
     }
   },
 
-  /**
-   * Cancela pedido
-   */
   cancelarPedido: async (pedidoId) => {
     try {
       const response = await api.patch(`${API_ENDPOINTS.CLIENTE.PEDIDOS}/${pedidoId}/cancelar`);
@@ -92,9 +69,6 @@ export const clienteApi = {
     }
   },
 
-  /**
-   * Rastreia pedido
-   */
   rastrearPedido: async (pedidoId) => {
     try {
       const response = await api.post(`${API_ENDPOINTS.CLIENTE.PEDIDOS}/${pedidoId}/rastrear`);
@@ -104,9 +78,6 @@ export const clienteApi = {
     }
   },
 
-  /**
-   * Paga pedido
-   */
   pagarPedido: async (pedidoId) => {
     try {
       const response = await api.post(`${API_ENDPOINTS.CLIENTE.PEDIDOS}/${pedidoId}/pagar`);
@@ -116,9 +87,6 @@ export const clienteApi = {
     }
   },
 
-  /**
-   * Obtém estatísticas do cliente
-   */
   getEstatisticas: async () => {
     try {
       const response = await api.get(`${API_ENDPOINTS.CLIENTE.PEDIDOS}/estatisticas`);
@@ -128,9 +96,6 @@ export const clienteApi = {
     }
   },
 
-  /**
-   * Cria feedback para pedido
-   */
   criarFeedback: async (pedidoId, dadosFeedback) => {
     try {
       const response = await api.post(
@@ -144,13 +109,7 @@ export const clienteApi = {
   }
 };
 
-/**
- * Hooks para cliente
- */
 export const clienteHooks = {
-  /**
-   * Hook para perfil do cliente
-   */
   usePerfil: () => {
     const [perfil, setPerfil] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -197,9 +156,6 @@ export const clienteHooks = {
     };
   },
 
-  /**
-   * Hook para pedidos do cliente
-   */
   usePedidos: (params = {}) => {
     const [pedidos, setPedidos] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
@@ -225,7 +181,6 @@ export const clienteHooks = {
         setLoading(true);
         setError(null);
         const response = await clienteApi.criarPedido(dadosPedido);
-        // Recarregar lista de pedidos
         await carregarPedidos();
         return response;
       } catch (err) {
@@ -241,7 +196,6 @@ export const clienteHooks = {
         setLoading(true);
         setError(null);
         const response = await clienteApi.cancelarPedido(pedidoId);
-        // Atualizar pedido na lista
         setPedidos(prev => prev.map(pedido => 
           pedido.id === pedidoId ? response : pedido
         ));
@@ -269,9 +223,6 @@ export const clienteHooks = {
     };
   },
 
-  /**
-   * Hook para pedido específico
-   */
   usePedido: (pedidoId) => {
     const [pedido, setPedido] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -331,9 +282,6 @@ export const clienteHooks = {
     };
   },
 
-  /**
-   * Hook para estatísticas do cliente
-   */
   useEstatisticas: () => {
     const [estatisticas, setEstatisticas] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -365,13 +313,7 @@ export const clienteHooks = {
   }
 };
 
-/**
- * Helpers para cliente
- */
 export const clienteHelpers = {
-  /**
-   * Formata dados do perfil para envio
-   */
   formatarPerfilParaEnvio: (dados) => {
     return {
       nome: dados.nome?.trim(),
@@ -382,9 +324,6 @@ export const clienteHelpers = {
     };
   },
 
-  /**
-   * Formata dados do pedido para envio
-   */
   formatarPedidoParaEnvio: (dados) => {
     return {
       empresaId: parseInt(dados.empresaId),
@@ -400,33 +339,21 @@ export const clienteHelpers = {
     };
   },
 
-  /**
-   * Calcula total do pedido
-   */
   calcularTotalPedido: (itens) => {
     return itens.reduce((total, item) => {
       return total + (item.precoUnitario * item.quantidade);
     }, 0);
   },
 
-  /**
-   * Verifica se pedido pode ser cancelado
-   */
   podeCancelarPedido: (pedido) => {
     const statusCancelaveis = ['PENDENTE', 'CONFIRMADO'];
     return statusCancelaveis.includes(pedido.status);
   },
 
-  /**
-   * Verifica se pedido pode ser avaliado
-   */
   podeAvaliarPedido: (pedido) => {
     return pedido.status === 'ENTREGUE' && !pedido.feedback;
   },
 
-  /**
-   * Formata feedback para envio
-   */
   formatarFeedbackParaEnvio: (dados) => {
     return {
       nota: parseInt(dados.nota),

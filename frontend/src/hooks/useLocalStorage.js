@@ -1,9 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import storageService from '../services/storage';
 
-/**
- * Hook para gerenciar localStorage de forma reativa
- */
 export const useLocalStorage = (key, defaultValue = null, options = {}) => {
   const {
     serialize = JSON.stringify,
@@ -12,12 +9,10 @@ export const useLocalStorage = (key, defaultValue = null, options = {}) => {
     syncAcrossTabs = true
   } = options;
 
-  // Estado inicial
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const item = storageService.getItem(key, defaultValue);
-      
-      // Validar se necessário
+
       if (validator && !validator(item)) {
         return defaultValue;
       }
@@ -29,24 +24,18 @@ export const useLocalStorage = (key, defaultValue = null, options = {}) => {
     }
   });
 
-  // Função para atualizar valor
   const setValue = useCallback((value) => {
     try {
-      // Permitir função para atualizar baseado no valor anterior
       const valueToStore = value instanceof Function ? value(storedValue) : value;
-      
-      // Validar se necessário
+
       if (validator && !validator(valueToStore)) {
         throw new Error('Valor não passou na validação');
       }
-      
-      // Atualizar estado
+
       setStoredValue(valueToStore);
-      
-      // Salvar no localStorage
+
       storageService.setItem(key, valueToStore);
-      
-      // Disparar evento customizado para sincronizar entre abas
+
       if (syncAcrossTabs) {
         window.dispatchEvent(new CustomEvent('localStorage-change', {
           detail: { key, value: valueToStore }
@@ -58,13 +47,11 @@ export const useLocalStorage = (key, defaultValue = null, options = {}) => {
     }
   }, [key, storedValue, validator, syncAcrossTabs]);
 
-  // Função para remover valor
   const removeValue = useCallback(() => {
     try {
       setStoredValue(defaultValue);
       storageService.removeItem(key);
-      
-      // Disparar evento customizado
+
       if (syncAcrossTabs) {
         window.dispatchEvent(new CustomEvent('localStorage-change', {
           detail: { key, value: null, removed: true }
@@ -76,7 +63,6 @@ export const useLocalStorage = (key, defaultValue = null, options = {}) => {
     }
   }, [key, defaultValue, syncAcrossTabs]);
 
-  // Sincronizar mudanças entre abas
   useEffect(() => {
     if (!syncAcrossTabs) return;
 
@@ -84,8 +70,7 @@ export const useLocalStorage = (key, defaultValue = null, options = {}) => {
       if (e.key === key) {
         try {
           const newValue = e.newValue ? deserialize(e.newValue) : defaultValue;
-          
-          // Validar se necessário
+
           if (validator && newValue !== defaultValue && !validator(newValue)) {
             return;
           }
@@ -103,10 +88,8 @@ export const useLocalStorage = (key, defaultValue = null, options = {}) => {
       }
     };
 
-    // Escutar mudanças do localStorage (entre abas)
     window.addEventListener('storage', handleStorageChange);
     
-    // Escutar mudanças customizadas (mesma aba)
     window.addEventListener('localStorage-change', handleCustomChange);
 
     return () => {
@@ -118,9 +101,6 @@ export const useLocalStorage = (key, defaultValue = null, options = {}) => {
   return [storedValue, setValue, removeValue];
 };
 
-/**
- * Hook para gerenciar um array no localStorage
- */
 export const useLocalStorageArray = (key, defaultValue = []) => {
   const [array, setArray, removeArray] = useLocalStorage(key, defaultValue, {
     validator: (value) => Array.isArray(value)
@@ -164,9 +144,6 @@ export const useLocalStorageArray = (key, defaultValue = []) => {
   };
 };
 
-/**
- * Hook para gerenciar um objeto no localStorage
- */
 export const useLocalStorageObject = (key, defaultValue = {}) => {
   const [object, setObject, removeObject] = useLocalStorage(key, defaultValue, {
     validator: (value) => typeof value === 'object' && value !== null
@@ -211,9 +188,6 @@ export const useLocalStorageObject = (key, defaultValue = {}) => {
   };
 };
 
-/**
- * Hook para gerenciar configurações de usuário
- */
 export const useUserSettings = (defaultSettings = {}) => {
   const settingsKey = 'user-settings';
   
@@ -244,16 +218,12 @@ export const useUserSettings = (defaultSettings = {}) => {
   };
 };
 
-/**
- * Hook para cache temporário com expiração
- */
-export const useTemporaryStorage = (key, ttl = 5 * 60 * 1000) => { // 5 minutos padrão
+export const useTemporaryStorage = (key, ttl = 5 * 60 * 1000) => {
   const cacheKey = `temp_${key}`;
   
   const [cacheData, setCacheData] = useState(null);
   const [isExpired, setIsExpired] = useState(true);
 
-  // Verificar cache ao montar
   useEffect(() => {
     const cached = storageService.getItemWithExpiry(cacheKey);
     if (cached) {
@@ -294,9 +264,6 @@ export const useTemporaryStorage = (key, ttl = 5 * 60 * 1000) => { // 5 minutos 
   };
 };
 
-/**
- * Hook para contador no localStorage
- */
 export const useLocalStorageCounter = (key, initialValue = 0) => {
   const [count, setCount] = useLocalStorage(key, initialValue, {
     validator: (value) => typeof value === 'number'
@@ -323,9 +290,6 @@ export const useLocalStorageCounter = (key, initialValue = 0) => {
   };
 };
 
-/**
- * Hook para histórico de valores
- */
 export const useLocalStorageHistory = (key, maxHistory = 10) => {
   const historyKey = `${key}_history`;
   
@@ -338,14 +302,12 @@ export const useLocalStorageHistory = (key, maxHistory = 10) => {
   const [currentValue, setCurrentValue] = useLocalStorage(key);
 
   const setValue = useCallback((newValue) => {
-    // Adicionar valor atual ao histórico antes de atualizar
     if (currentValue !== null && currentValue !== newValue) {
       addToHistory({
         value: currentValue,
         timestamp: Date.now()
       });
-      
-      // Manter apenas os últimos N valores
+
       if (history.length >= maxHistory) {
         const newHistory = history.slice(-(maxHistory - 1));
         clearHistory();
@@ -360,8 +322,6 @@ export const useLocalStorageHistory = (key, maxHistory = 10) => {
     if (history.length > 0) {
       const lastValue = history[history.length - 1];
       setCurrentValue(lastValue.value);
-      
-      // Remover último item do histórico
       const newHistory = history.slice(0, -1);
       clearHistory();
       newHistory.forEach(item => addToHistory(item));

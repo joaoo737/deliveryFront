@@ -19,7 +19,7 @@ const RegisterForm = () => {
   const navigate = useNavigate();
   const { register, isLoading, error, clearError } = useAuth();
   
-  const [step, setStep] = useState(1); // 1: Tipo de usuário, 2: Dados básicos, 3: Dados específicos
+  const [step, setStep] = useState(1);
   const [tipoUsuario, setTipoUsuario] = useState('');
   const [categorias, setCategorias] = useState([]);
   const [loadingCategorias, setLoadingCategorias] = useState(false);
@@ -29,13 +29,11 @@ const RegisterForm = () => {
     senha: '',
     confirmarSenha: '',
     
-    // Cliente
     nome: '',
     cpf: '',
     telefoneCliente: '',
     enderecoCliente: '',
     
-    // Empresa
     nomeFantasia: '',
     cnpj: '',
     telefoneEmpresa: '',
@@ -48,7 +46,6 @@ const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Carregar categorias quando selecionar empresa
   useEffect(() => {
     if (tipoUsuario === 'EMPRESA') {
       carregarCategorias();
@@ -77,7 +74,6 @@ const RegisterForm = () => {
     const { name, value } = e.target;
     let formattedValue = value;
     
-    // Aplicar formatação em tempo real
     if (name === 'cpf') {
       formattedValue = formatCPF(value);
     } else if (name === 'cnpj') {
@@ -91,7 +87,6 @@ const RegisterForm = () => {
       [name]: formattedValue
     }));
     
-    // Limpar erro específico
     if (validationErrors[name]) {
       setValidationErrors(prev => ({
         ...prev,
@@ -108,7 +103,6 @@ const RegisterForm = () => {
     const errors = {};
     
     if (stepNumber === 2) {
-      // Validar dados básicos
       const emailError = validateEmail(formData.email);
       if (emailError) errors.email = emailError;
       

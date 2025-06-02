@@ -5,9 +5,6 @@ import { useCart } from '../../../context/CartContext';
 import { useTheme } from '../../../context/ThemeContext';
 import './Header.css';
 
-/**
- * Componente Header principal da aplicação
- */
 const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const { itemCount } = useCart();
@@ -45,7 +42,6 @@ const Header = () => {
     return location.pathname === path || location.pathname.startsWith(path + '/');
   };
 
-  // Links baseados no tipo de usuário
   const getNavigationLinks = () => {
     if (!isAuthenticated) {
       return [
@@ -311,9 +307,6 @@ const Header = () => {
   );
 };
 
-/**
- * Hook personalizado para controle do header
- */
 export const useHeader = () => {
   const [isScrolled, setIsScrolled] = React.useState(false);
 
